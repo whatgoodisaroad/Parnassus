@@ -1,0 +1,15 @@
+﻿{
+    type:"vertical-split",
+    collapsed:false,
+    threshold:"20%",
+    children:[
+        {
+            type:"module",
+            name:"parnassus-navigator"
+        },
+        {
+            type:"module",
+            name:"text-editor"
+        },
+    ]
+}

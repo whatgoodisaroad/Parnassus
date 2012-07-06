@@ -1,0 +1,73 @@
+!!!
+html(lang='en')
+  head
+    title= title
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/font-awesome.css')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Belgrano')
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    div(class="navbar navbar-fixed-top")
+        div(class="navbar-inner")
+            div(class="container-fluid")
+                ul(class="nav")
+                    li(class="active logo")
+                        a(href="#") 
+                            i(class="icon-cloud")
+                            span Parnassus
+                    li(class="dropdown")
+                        a(href="#", class="dropdown-toggle", data-toggle="dropdown") File
+                            b(class="caret")
+                        ul(class="dropdown-menu")
+                            li 
+                                a(href="#") git branch
+                            li 
+                                a(href="#") git clone
+                            li(class="divider")
+                            li 
+                                a(href="#") git commit
+                            li 
+                                a(href="#") git push
+                            li 
+                                a(href="#") git pull
+                            li(class="divider")
+                            li 
+                                a(href="#") git add
+                            li 
+                                a(href="#") git rm
+                            li 
+                                a(href="#") git mv
+                    li(class="dropdown")
+                        a(href="#", class="dropdown-toggle", data-toggle="dropdown") Edit
+                            b(class="caret")
+                        ul(class="dropdown-menu")
+                            li 
+                                a(href="#") Undo
+                            li 
+                                a(href="#") Redo
+                            li(class="divider")
+                            li 
+                                a(href="#") Cut
+                            li 
+                                a(href="#") Copy
+                            li 
+                                a(href="#") Paste
+                    li(class="dropdown")
+                        a(href="#", class="dropdown-toggle", data-toggle="dropdown") Manage
+                            b(class="caret")
+                        ul(class="dropdown-menu")
+                            li 
+                                a(href="#") Install Plugin...
+    div(class="container-fluid")
+        div!= body
+    
+    script(src='/js/jquery-1.7.2.min.js')
+    script(src='/js/underscore-min.js')
+    script(src='/js/backbone-min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/bootstrap-dropdown.js')
+    script(src="/js/ace/ace.js")
+    script(src="/js/templates.js")
+    script(src="/js/model/repository.js")
+    script(src='/js/app.js')
+    

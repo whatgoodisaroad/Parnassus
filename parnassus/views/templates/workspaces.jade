@@ -1,0 +1,17 @@
+.main-topbar
+    .btn-group
+        a.btn.view-control.active
+            i.icon-list-ul
+        a.btn.view-control
+            i.icon-th
+    .breadcrumbs
+        a(href="/#") Home
+        a(href="/#workspace") Workspace
+    .clearfix
+ul.workspaces
+    each workspace in workspaces
+        li(data-path = workspace.get("path") )
+            div
+                h1= workspace.get("name")
+                h2!= workspace.get("path").replace(/([\/\\])/g, "$1<wbr>")
+                div.status
