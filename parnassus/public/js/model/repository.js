@@ -8,7 +8,11 @@ var ChangeType = {
     Delete:"Delete"
 };
 
-var Change = Backbone.Model.extend({ });
+var Change = Backbone.Model.extend({ 
+    pathComponents:function() {
+        return this.get("path").split("/");
+    }
+});
 
 Change.Rename = function(oldPath, newPath) {
     return new Change({
@@ -32,6 +36,88 @@ Change.Delete = function(path) {
     });
 };
 
+var ChangeTree = Backbone.Model.extend({
+    init:function(changes) {
+        var group = function rec(depth, changes) {
+            return {
+                folders:_.chain(changes)
+                    .filter(function(elem) {
+                        return elem.pathComponents().length - 1 > depth;
+                    })
+                    .groupBy(function(elem) {
+                        return elem.pathComponents()[depth]
+                    })
+                    .map(function(elem, key) {
+                        return { key:key, children:rec(depth + 1, elem) };
+                    })
+                    .value(),
+                leaves:_.chain(changes)
+                    .filter(function(elem) {
+                        return elem.pathComponents().length - 1 == depth;
+                    })
+                    .value()
+            };
+        };
+        this.set(
+            "root",
+            group(
+                0, 
+                changes
+            )
+        );
+    },
+    asUl:function() {
+        if (!$) {
+            throw "No jQuery";
+        }
+
+        var convert = function rec(node) {
+            var 
+                res = $("<h3/><ul/>"), 
+                ul = res.filter("ul"),
+                idx,
+                leaf,
+                comps;
+
+            res.filter("h3")
+                .addClass("folder-toggle open")
+                .attr("for", node.key)
+                .text(node.key);
+
+            ul.attr("for", node.key);
+
+            for (idx = 0; idx < node.children.folders.length; ++idx) {
+                $("<li/>")
+                    .addClass("folder")
+                    .html(
+                        rec(
+                            node.children.folders[idx]
+                        )
+                    )
+                    .appendTo(ul);
+            }
+            
+            for (idx = 0; idx < node.children.leaves.length; ++idx) {
+                leaf = node.children.leaves[idx];
+                comps = leaf.pathComponents();
+
+                $("<li/>")
+                    .addClass("change")
+                    .text(comps[comps.length - 1])
+                    .attr("data-path", leaf.get("path"))
+                    .appendTo(ul);
+            }
+
+            return res;
+        };
+
+        return convert({ 
+            key:"Root", 
+            children:this.get("root") 
+        });
+    }
+});
+
 var RepositoryStatus = Backbone.Model.extend({
 	init:function(name, path) {
 		this.set({
@@ -44,6 +130,25 @@ var RepositoryStatus = Backbone.Model.extend({
             ignoring:[]
 		});
 	},
+    
+    loadStatus:function(fn) {
+        var self = this;
+        if ($) {
+            $.getJSON(
+                "/json/status/" + 
+                    encodeURIComponent(
+                        this.get("path")
+                    ),
+                function(data) {
+                    self.parseStatus(data);
+                    if ($.isFunction(fn)) {
+                        fn();
+                    }
+                }
+            );
+        }
+    },
+    
     parseStatus:function(src) {
         var lines = src
             .replace(/^#\s*/mg, "")
@@ -122,6 +227,7 @@ var RepositoryStatus = Backbone.Model.extend({
 try {
 	exports.ChangeType = ChangeType;
     exports.Change = Change;
+    exports.ChangeTree = ChangeTree;
     exports.RepositoryStatus = RepositoryStatus;
 }
 catch(e) {}

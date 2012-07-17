@@ -25,7 +25,8 @@ var Router = Backbone.Router.extend({
     routes:{
         "":"index",
         "edit":"edit",
-        "workspace":"workspace"
+        "workspace":"workspace",
+        "workspace/:name":"openWorkspace"
     },
     
     index:function() {
@@ -36,7 +37,10 @@ var Router = Backbone.Router.extend({
     },
     
     workspace:function() {
-        var ws = new WorkspaceList();
+        var 
+            ws = new WorkspaceList(),
+            router = this;
+
         ws.fetch({ 
             success:function() {
                 $("body")
@@ -49,34 +53,41 @@ var Router = Backbone.Router.extend({
                     { workspaces:ws.toArray() }
                 );
 
-                $("ul.workspaces li").each(function(idx, w) {
-                     var $w = $(w);
-                     $.getJSON(
-                         "/json/status/" + 
-                            encodeURIComponent(
-                                $w.attr("data-path")
-                            ), 
-                         function(status) {
-                            var ws = new RepositoryStatus();
-                            ws.parseStatus(status);
+                $("ul.workspaces li")
+                    .click(function() {
+                        router.navigate(
+                            "workspace/" + $("h1", this).text(), 
+                            { trigger:true }
+                        );
+                    })
+                    .each(function(idx, w) {
+                         var $w = $(w);
+                         $.getJSON(
+                             "/json/status/" + 
+                                encodeURIComponent(
+                                    $w.attr("data-path")
+                                ), 
+                             function(status) {
+                                var ws = new RepositoryStatus();
+                                ws.parseStatus(status);
 
-                            var msg = (
-                                "The branch is " + 
-                                ws.get("branch") + 
-                                ". There are " + 
-                                ws.get("staged").length + 
-                                " staged changes. There are " + 
-                                ws.get("unstaged").length + 
-                                " unstaged changes" + 
-                                "There are " + 
-                                ws.get("untracked").length + 
-                                " untracked files"
-                            );
+                                var msg = (
+                                    "The branch is " + 
+                                    ws.get("branch") + 
+                                    ". There are " + 
+                                    ws.get("staged").length + 
+                                    " staged changes. There are " + 
+                                    ws.get("unstaged").length + 
+                                    " unstaged changes" + 
+                                    "There are " + 
+                                    ws.get("untracked").length + 
+                                    " untracked files"
+                                );
 
-                            $w.find(".status").text(msg);
-                         }
-                     );
-                });
+                                $w.find(".status").text(msg);
+                             }
+                         );
+                    });
 
                 $("<div/>")
                     .addClass("clearfix")
@@ -99,15 +110,81 @@ var Router = Backbone.Router.extend({
 
                         $(".main-topbar .btn.view-control").removeClass("active");
                         t.addClass("active");
-
-
                     }
                 );
             }
         });
     },
 
-    edit:function(id) { },
+    openWorkspace:function(name) {
+        var path = "/Users/allenwy/Dropbox/source/web/parnassus/";
+
+        var rs = new RepositoryStatus({ name:"parnassus", path:path });
+        rs.loadStatus(function() {
+            $("body")
+                .removeClassLike("route")
+                .addClass("route-edit");
+
+            
+            
+            jade.render(
+                $("#main")[0],
+                "workspace", { 
+                    root:rs.get("path"),
+                    name:name, 
+                    repo:rs,
+                    unstaged:{
+                        // modified:rs
+                        //     .get("unstaged")
+                        //     .filter(function(elem) { 
+                        //         return elem.get("changeType") == ChangeType.Modify;
+                        //     }),
+                        modified:[],
+                        deleted:rs
+                            .get("unstaged")
+                            .filter(function(elem) { 
+                                return elem.get("changeType") == ChangeType.Delete;
+                            })
+                    }
+                }
+            );
+
+
+            var ct = new ChangeTree();
+            ct.init(rs
+                .get("unstaged")
+                .filter(function(elem) { 
+                    return elem.get("changeType") == ChangeType.Modify;
+                })
+            );
+
+            $(".unstaged.modified").html(
+                ct.asUl()
+            );
+
+            $(".changeset ul li[data-path]").click(function() { 
+                var 
+                    loc = "/edit/"+ encodeURIComponent(rs.get("path") + $(this).data("path"))
+                    iframe = $("#source-iframe");
+
+                iframe
+                    .animate({ opacity:0 }, function() {
+                        iframe
+                            .prop("src", loc)
+                            .animate({ opacity:1 });
+                    });
+                    
+            });
+
+            $(".folder-toggle").click(function() {
+                $(this)
+                    .toggleClass("open")
+                    .next()
+                        .toggleClass("hidden");
+            });
+
+        });
+    },
 });
 
 

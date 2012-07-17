@@ -2,6 +2,7 @@ var
     express = require("express"),
     routes = require("./routes"),
     json = require("./lib/parnassus/json"),
+    files = require("./lib/parnassus/files"),
 
     app = module.exports = express.createServer();
 
@@ -28,9 +29,16 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
+app.get("/edit/:path", files.edit);
+
 app.get("/json/workspaces", json.ws);
 
 app.get("/json/status/:path", json.status);
 
 app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+console.log(
+    "Express server listening on port %d in %s mode", 
+    app.address().port, 
+    app.settings.env
+);

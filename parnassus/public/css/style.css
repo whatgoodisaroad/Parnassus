@@ -1,5 +1,7 @@
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
+.hidden { display:none; }
+
 body {
     padding-top:31px;
 }
@@ -69,8 +71,9 @@ body {
     padding-top:40px;
 }
 
-body.route-index {
-    background:url("/img/black_linen_v2.png");
+body.route-index,
+body.route-edit {
+    background:url("/img/classy_fabric.png");
 }
 
 .route-index #main.view-list-th ul {
@@ -78,9 +81,13 @@ body.route-index {
     width:100%;
 }
 
+.route-index #main ul li:hover {
+    cursor:pointer;
+}
+
 .route-index #main ul li .status {
-    color:#bbb
-    font-size:8pt;
+    color:#bbb;
+    font-size:10pt;
 }
 
     .route-index #main.view-list-th ul li {
@@ -91,11 +98,13 @@ body.route-index {
         color:#ccc;
     }
 
+    
+
     .route-index #main.view-list-th ul li > div {
         border:1px solid #333;
         -webkit-border-radius:5px;
         border-radius:5px;
-        background:rgba(0, 0, 0, 0.3);
+        background:rgba(0, 0, 0, 0.5);
         overflow:hidden;
         padding:0.5em;
 
@@ -109,33 +118,20 @@ body.route-index {
     }
 
     .route-index #main.view-list-th ul li h2 {
-        font-size:8pt;
-        margin:0;
-        line-height:10pt;
-        font-weight:normal;
-        color:#888;
-    }
-
-    .route-index #main.view-list-th ul li h3 {
-        font-size:10pt;
-        margin:0;
-        line-height:10pt;
-        font-weight:normal;
+        display:none;
     }
 
 .route-index #main.view-list-ul ul {
-    margin:2em auto;
-    width:700px;
+    margin:2em;
+    width:600px;
     border:1px solid #333;
     -webkit-border-radius:5px;
     border-radius:5px;
-    background:rgba(0, 0, 0, 0.3);
-
+    background:rgba(0, 0, 0, 0.5);
 }
 
     .route-index #main.view-list-ul ul li {
         list-style:none;
-
         border-top:1px solid #333;
         border-bottom:1px solid #000;
         padding:4px 16px;
@@ -147,24 +143,133 @@ body.route-index {
 
     .route-index #main.view-list-ul ul li h1 {
         color:#ccc;
-        font-size:12pt;
+        font-size:16pt;
     }
 
     .route-index #main.view-list-ul ul li h2 {
         font-size:8pt;
-        margin:0;
+        margin:0 0 12px 0;
         line-height:10pt;
         font-weight:normal;
-        color:#888;
+        color:#777;
     }
+
+.route-edit .changeset {
+    color:#fff;
+    background:rgba(64, 64, 64, 0.4);
+    margin-top:-1em;
+    padding-top:1em;
+    width:300px;
+    border-right:1px solid #444;
+    border-bottom:1px solid #444;
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .4);
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .4);
+
+    top:77px;
+    bottom:1em;
+    position:absolute;
+
+    overflow:scroll;
+}
+
+    .route-edit .changeset h1,
+    .route-edit .changeset h2 {
+        padding:0.4em 0 0.4em 0.4em;
+    }
+
+    .route-edit .changeset ul {
+        padding:0 0 0 0.8em;
+        margin:0;
+        border-left:1px dotted rgba(0, 0, 0, 0.5);
+    }
+
+    .route-edit .changeset ul li {
+        list-style:none;
+        cursor:pointer;
+        margin:0.4em 0
+    }
+
+    .route-edit .changeset ul li.folder {
+        color:#aaa;
+    }
+
+    .route-edit .changeset ul li.folder .folder-toggle:before {
+        content:"\f0da";
+        font-family:"FontAwesome";
+        display:inline-block;
+        margin-right:4px;
+    }
+
+    .route-edit .changeset ul li.folder .folder-toggle.open:before {
+        content:"\f0d7";
+    }
+
+
+    .route-edit .changeset ul li.change {
+        color:#fff;
+    }
+
+    .route-edit .changeset ul li.change:hover {
+        
+    }
+
+    .route-edit .changeset h1,
+    .route-edit .changeset h2,
+    .route-edit .changeset h3 {
+        font-size:12px;
+        line-height:16px;
+        font-weight:normal;
+        display:block;
+    }
+
+    .route-edit .changeset h1 {
+        background:rgba(10, 10, 10, 0.5);
+        border-bottom:1px solid #2a2a2a;
+    }
+    .route-edit .changeset h2 {
+        background:rgba(10, 10, 10, 0.3);
+        border-bottom:1px solid #2a2a2a;
+    }
+    
+.route-edit #frame-holder {
+    background:#fff;
+    position:absolute;
+    left:310px;
+    top:64px;
+    right:1em;
+    bottom:1em;
+    background:url("/img/classy_fabric.png");
+    padding:0;
+}
+
+.route-edit #frame-holder iframe {
+    width:100%;
+    height:100%;
+    margin:0;
+    background:url("/img/classy_fabric.png");
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .main-topbar {
     background:#444;
-    padding:6px 8px;
+    padding:2px 8px;
     position:fixed;
     top:32px;
     left:0;
     right:0;
+    border-bottom:1px solid #555;
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .4);
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .4);
 }
 
 .main-topbar .breadcrumbs {
@@ -176,22 +281,24 @@ body.route-index {
 
 .main-topbar .breadcrumbs a {
     cursor:pointer;
-    color:#000;
-    text-shadow:0px 1px 1px #555;
+    color:#fff;
+    text-shadow:0px 1px 1px #000;
     text-decoration:none;
 }
 
 .main-topbar .breadcrumbs a:hover {
-    color:#000;
+    text-shadow:0px 0px 4px #999;
 }
 
 .main-topbar .breadcrumbs a:before {
     margin:0 4px;
     content:"\f054";
     font-family:FontAwesome;
-    color:#222;
+    color:#bbb;
+    text-shadow:0px 1px 1px #000;
 }
 
 .main-topbar .btn-group {
-    float:left;
+    float:right;
+    margin-right:4em;
 }

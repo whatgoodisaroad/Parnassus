@@ -3,7 +3,10 @@ var
     cp = require("child_process"),
     repo = require("../../public/js/model/repository");
 
-var root = process.cwd() + "/../..";
+//var root = process.cwd() + "/../../..";
+var root = process.platform == "darwin" ?
+    "/Users/allenwy/Dropbox/source" :
+    "/home/wyatt/Dropbox/source";
 
 if (process.platform == "win32") {
     root = root.replace(/\//g, "\\");

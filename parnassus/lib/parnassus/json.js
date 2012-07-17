@@ -2,7 +2,7 @@ var
     parnassus = require("./");
 
 exports.ws = function(req, res) {
-	res.writeHead(200, {"Content-Type": "application/json"});
+	res.writeHead(200, { "Content-Type":"application/json" });
     parnassus.listWorkspaces(
 		function(files) {
 	        res.end(
