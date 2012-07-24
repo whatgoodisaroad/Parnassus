@@ -60,13 +60,27 @@ html(lang='en')
                                 a(href="#") Install Plugin...
     div(class="container-fluid")
         div!= body
+
+
+    #confirmModal.modal.hide
+        .modal-header
+            button.close(type = "button", data-dismiss = "modal") ×
+            h3
+        .modal-body
+        .modal-footer
+            a.btn(href="#", data-dismiss="modal") No
+            a.btn.btn-primary(href="#") Yes
+
     
     script(src='/js/jquery-1.7.2.min.js')
     script(src='/js/underscore-min.js')
     script(src='/js/backbone-min.js')
     script(src='/js/bootstrap.min.js')
     script(src='/js/bootstrap-dropdown.js')
+    script(src='/js/bootstrap-tab.js')
+    script(src='/js/bootstrap-modal.js')
     script(src="/js/templates.js")
     script(src="/js/model/repository.js")
+    script(src="/js/model/ide-tab.js")
     script(src='/js/app.js')
     

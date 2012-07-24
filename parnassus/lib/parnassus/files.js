@@ -10,12 +10,14 @@ exports.edit = function(req, res) {
         );
     };
 
+    var fullPath = process.cwd() + "/" + req.params.path;
+
     path.exists(
-        req.params.path, 
+        fullPath, 
         function(exists) {
             if (exists) {
                 fs.readFile(
-                    req.params.path, 
+                    fullPath, 
                     function (err, data) {
                         if (err) {
                             r(err);

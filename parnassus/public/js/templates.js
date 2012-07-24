@@ -184,45 +184,23 @@ jade.render = function(node, template, data) {
   node.innerHTML = tmp;
 };
 
+jade.templates["ide_tab"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<iframe');
+buf.push(attrs({ 'frameBorder':(0), 'src':(src) }, {"frameBorder":true,"src":true}));
+buf.push('></iframe>');
+}
+return buf.join("");
+}
 jade.templates["workspace"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="main-topbar"><div class="breadcrumbs"><a href="/#">Home</a><a href="/#workspace">Workspace</a><a');
-buf.push(attrs({ 'href':("/#workspace/" + name) }, {"href":true}));
-buf.push('>');
-var __val__ = name
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a></div><div class="clearfix"></div></div><div class="changeset"><div> <h1>Staged</h1></div><div><h1>Not staged</h1><h2>Modified</h2><ul class="unstaged modified">');
-// iterate unstaged.modified
-;(function(){
-  if ('number' == typeof unstaged.modified.length) {
-    for (var $index = 0, $$l = unstaged.modified.length; $index < $$l; $index++) {
-      var mod = unstaged.modified[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'data-path':(root + mod.get("path")) }, {"data-path":true}));
-buf.push('>');
-var __val__ = mod.get("path")
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-    }
-  } else {
-    for (var $index in unstaged.modified) {
-      var mod = unstaged.modified[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'data-path':(root + mod.get("path")) }, {"data-path":true}));
-buf.push('>');
-var __val__ = mod.get("path")
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-   }
-  }
-}).call(this);
-
-buf.push('</ul><h2>Deleted</h2><ul class="unstaged deleted">');
+buf.push('<div class="main-topbar"><div class="breadcrumbs"></div><div class="clearfix"></div></div><div class="changeset"><div> <h1>Staged</h1><h2>Modified</h2><div class="staged modified"></div></div><div><h1>Not staged</h1><h2>Modified</h2><div class="unstaged modified"></div><h2>Deleted</h2><ul class="unstaged deleted">');
 // iterate unstaged.deleted
 ;(function(){
   if ('number' == typeof unstaged.deleted.length) {
@@ -250,7 +228,7 @@ buf.push('</li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div><div id="frame-holder"><iframe id="source-iframe" frameBorder="0"></iframe></div>');
+buf.push('</ul></div><div><button id="addFileButton" class="btn"> <text>Add File</text><span class="icon-file"></span></button></div></div><div class="open-files"><ul id="ide-tabs" class="nav nav-tabs"></ul><div id="tab-content" class="tab-content"></div></div>');
 }
 return buf.join("");
 }
@@ -259,7 +237,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="main-topbar"><div class="btn-group"><a class="btn view-control active"><i class="icon-list-ul"></i></a><a class="btn view-control"><i class="icon-th"></i></a></div><div class="breadcrumbs"><a href="/#">Home</a><a href="/#workspace">Workspace</a></div><div class="clearfix"></div></div><ul class="workspaces">');
+buf.push('<div class="main-topbar"><div class="btn-group"><a class="btn view-control active"><i class="icon-list-ul"></i></a><a class="btn view-control"><i class="icon-th"></i></a></div><div class="breadcrumbs"></div><div class="clearfix"></div></div><ul class="workspaces">');
 // iterate workspaces
 ;(function(){
   if ('number' == typeof workspaces.length) {

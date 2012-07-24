@@ -26,7 +26,8 @@ var Router = Backbone.Router.extend({
         "":"index",
         "edit":"edit",
         "workspace":"workspace",
-        "workspace/:name":"openWorkspace"
+        "workspace/:name":"openWorkspace",
+        "workspace/:name/*file":"openFile"
     },
     
     index:function() {
@@ -116,17 +117,22 @@ var Router = Backbone.Router.extend({
         });
     },
 
-    openWorkspace:function(name) {
-        var path = "/Users/allenwy/Dropbox/source/web/parnassus/";
+    openWorkspace:function(name, cont) {
+        //var path = "/Users/allenwy/Dropbox/source/web/parnassus/";
+        //var path = "/home/wyatt/Dropbox/source/web/parnassus/";
+        var path = "workspace/" + name;
 
-        var rs = new RepositoryStatus({ name:"parnassus", path:path });
+        var router = this;
+
+        var rs = new RepositoryStatus({ name:name, path:path });
         rs.loadStatus(function() {
+
+            var tabs = new Backbone.Collection({ model:IdeTab });
+            
             $("body")
                 .removeClassLike("route")
                 .addClass("route-edit");
 
-            
-            
             jade.render(
                 $("#main")[0],
                 "workspace", { 
@@ -134,11 +140,6 @@ var Router = Backbone.Router.extend({
                     name:name, 
                     repo:rs,
                     unstaged:{
-                        // modified:rs
-                        //     .get("unstaged")
-                        //     .filter(function(elem) { 
-                        //         return elem.get("changeType") == ChangeType.Modify;
-                        //     }),
                         modified:[],
                         deleted:rs
                             .get("unstaged")
@@ -149,31 +150,27 @@ var Router = Backbone.Router.extend({
                 }
             );
 
-
             var ct = new ChangeTree();
-            ct.init(rs
-                .get("unstaged")
-                .filter(function(elem) { 
-                    return elem.get("changeType") == ChangeType.Modify;
-                })
-            );
 
-            $(".unstaged.modified").html(
-                ct.asUl()
-            );
+            ct.init(rs.stagedModify());
+            $(".staged.modified").html(ct.asUl());
+
+            ct.init(rs.unstagedModify());
+            $(".unstaged.modified").html(ct.asUl());
 
             $(".changeset ul li[data-path]").click(function() { 
-                var 
-                    loc = "/edit/"+ encodeURIComponent(rs.get("path") + $(this).data("path"))
-                    iframe = $("#source-iframe");
+                var item = this;
 
-                iframe
-                    .animate({ opacity:0 }, function() {
-                        iframe
-                            .prop("src", loc)
-                            .animate({ opacity:1 });
-                    });
-                    
+                App.confirm(
+                    "Stage?", 
+                    "Do you want to stage the file before editing?", 
+                    function() {
+                        router.navigate(
+                            "workspace/" + rs.get("name") + "/" + $(item).data("path"), 
+                            { trigger:true }
+                        );
+                    }
+                );
             });
 
             $(".folder-toggle").click(function() {
@@ -183,31 +180,157 @@ var Router = Backbone.Router.extend({
                         .toggleClass("hidden");
             });
 
+            $("#addFileButton").click(function() {
+                App.confirm("Add File", "Add a file");
+            });
+
+            if ($.isFunction(cont)) { cont(); }
         });
     },
+
+    openFile:function(name, file) {
+        var router = this;
+
+        if (!$("body").is(".route-edit")) {
+            this.openWorkspace(name, cont);
+        }
+        else {
+            cont();
+        }
+
+        function cont() {
+
+            var 
+                maybeTab = $("#ide-tabs li a[data-path='" + file + "']"),
+                fileOpen = $.trim(file).length && maybeTab.length;
+
+            if (fileOpen) {
+                maybeTab.tab("show");
+            }
+
+            else {
+                var tab = new IdeTab({
+                    path:file,
+                    repository:name
+                });
+
+                var displayTab = $("<li><a><span/><span/></li>")
+                    .find("a")
+                        .attr({ 
+                            "data-target":"#ide-tab-" + tab.cid, 
+                            "data-toggle":"tab",
+                            "data-path":tab.get("path")
+                        })
+                        .click(function(evt) {
+                            evt.preventDefault();
+                            router.navigate(
+                                "workspace/" + name + "/" + tab.get("path")
+                            );
+                        })
+                        .find("span:first")
+                            .text(tab.name())
+                            .end()
+                        .find("span:last")
+                            .addClass("icon-remove")
+                            .end()
+                        .end()
+                    .prependTo("#ide-tabs")
+
+                $("<div/>")
+                    .text(tab.name())
+                    .attr("id", "ide-tab-" + tab.cid)
+                    .appendTo("#tab-content");
+
+                jade.render(
+                    $("#ide-tab-" + tab.cid)[0],
+                    "ide_tab",
+                    { src:tab.editorFrameUrl() }
+                );
+
+                displayTab.find("a").tab("show");
+            }
+        }
+    }
 });
 
+function updateBreadcrumbs() {
+    setTimeout(
+        function() {
+            var 
+                components = location.hash
+                    .replace("#", "")
+                    .replace(/^\//, "")
+                    .split("/"),
+                sub = "#",
+                crumbs = [ { text:"home", link:"/" } ];
+
+            for (var idx = 0; idx < components.length; ++idx) {
+                sub += "/" + components[idx];
+                crumbs.push({
+                    text:components[idx],
+                    link:sub
+                });
+            }
+
+            $(".breadcrumbs").html("");
+            $.each(crumbs, function() {
+                $("<a/>")
+                    .text(this.text)
+                    .attr("href", this.link)
+                    .appendTo(".breadcrumbs");
+            });
+            
+        }, 
+        100
+    );
+};
+
+$(window).on("hashchange", updateBreadcrumbs);
+
+var App;
 
 $(function() {
     $('.dropdown-toggle').dropdown();
-    
-    //var editor = ace.edit("editor");
 
-    
-
-
-    var App = {
-        Views: {},
-        Controllers: {},
-        init: function() {
+    App = {
+        Views:{},
+        Controllers:{},
+        init:function() {
             new Router();
             Backbone.history.start();
-        }  
+        },
+
+        confirm:function(title, msg, yfn, nfn) {
+            $("#confirmModal")  
+                .find(".modal-header")
+                    .text(title)
+                    .end()
+                .find(".modal-body")
+                    .html(msg)
+                    .end()
+                .find(".btn-primary")
+                    .click(function(evt) {
+                        evt.preventDefault();
+                        $(this).unbind();
+                        if ($.isFunction(yfn)) {
+                            yfn();
+                        }
+                    })
+                    .end()
+                .find(".btn:not(.btn-primary)")
+                    .click(function(evt) {
+                        evt.preventDefault();
+                        $(this).unbind();
+                        if ($.isFunction(nfn)) {
+                            nfn();
+                        }
+                    })
+                    .end()
+                .modal();
+        }
     };
 
     App.init();
-
-
     
-
+    updateBreadcrumbs();
 });

@@ -225,13 +225,16 @@ body.route-edit {
     .route-edit .changeset h1 {
         background:rgba(10, 10, 10, 0.5);
         border-bottom:1px solid #2a2a2a;
+
+        margin-top:2em;
+        border-top:2px solid #555;
     }
     .route-edit .changeset h2 {
         background:rgba(10, 10, 10, 0.3);
         border-bottom:1px solid #2a2a2a;
     }
     
-.route-edit #frame-holder {
+.route-edit .open-files {
     background:#fff;
     position:absolute;
     left:310px;
@@ -250,9 +253,23 @@ body.route-edit {
 }
 
 
+.tab-content > div { display:none; }
+.tab-content > div.active { display:block; }
 
+.tab-content > div { 
+    position:absolute;
+    top:36px;
+    bottom:0;
+    left:0;
+    right:0;
+}
 
+.tab-content > div iframe {
+    height:100%;
+    width:100%;
+}
 
+.nav-tabs { margin:0!important; }
 
 
 

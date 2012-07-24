@@ -1,12 +1,11 @@
 .main-topbar
     .breadcrumbs
-        a(href="/#") Home
-        a(href="/#workspace") Workspace
-        a(href="/#workspace/" + name)= name
     .clearfix
 .changeset
     div 
         h1 Staged
+        h2 Modified
+        div.staged.modified
     div
         h1 Not staged
         h2 Modified
@@ -15,5 +14,10 @@
         ul.unstaged.deleted
             for mod in unstaged.deleted
                 li(data-path = root + mod.get("path"))= mod.get("path")
-#frame-holder
-    iframe#source-iframe(frameBorder = 0)
+    div
+        button#addFileButton.btn 
+            text Add File
+            span.icon-file
+.open-files
+    ul#ide-tabs.nav.nav-tabs
+    div#tab-content.tab-content

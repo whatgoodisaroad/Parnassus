@@ -35,7 +35,7 @@ app.get("/json/workspaces", json.ws);
 
 app.get("/json/status/:path", json.status);
 
-app.listen(3000);
+app.listen(3001);
 
 console.log(
     "Express server listening on port %d in %s mode", 

@@ -5,7 +5,8 @@ if (!Backbone) {
 var ChangeType = {
     Rename:"Rename",
     Modify:"Modify",
-    Delete:"Delete"
+    Delete:"Delete",
+    Untracked:"Untracked"
 };
 
 var Change = Backbone.Model.extend({ 
@@ -35,6 +36,19 @@ Change.Delete = function(path) {
         path:path
     });
 };
+
+Change.Untracked = function(path) {
+    return new Change({
+        changeType:ChangeType.Untracked,
+        path:path
+    });
+}
+
+function changesOfType(cs, ct) {
+    return cs.filter(function(elem) { 
+        return elem.get("changeType") == ct;
+    });
+}
 
 var ChangeTree = Backbone.Model.extend({
     init:function(changes) {
@@ -66,10 +80,13 @@ var ChangeTree = Backbone.Model.extend({
             )
         );
     },
+
     asUl:function() {
         if (!$) {
             throw "No jQuery";
         }
+
+
 
         var convert = function rec(node) {
             var 
@@ -104,7 +121,10 @@ var ChangeTree = Backbone.Model.extend({
                 $("<li/>")
                     .addClass("change")
                     .text(comps[comps.length - 1])
-                    .attr("data-path", leaf.get("path"))
+                    .attr(
+                        "data-path", 
+                        leaf.get("path")
+                    )
                     .appendTo(ul);
             }
 
@@ -112,9 +132,10 @@ var ChangeTree = Backbone.Model.extend({
         };
 
         return convert({ 
-            key:"Root", 
-            children:this.get("root") 
-        });
+                key:"Root", 
+                children:this.get("root") 
+            })
+            .filter("ul");
     }
 });
 
@@ -130,6 +151,48 @@ var RepositoryStatus = Backbone.Model.extend({
             ignoring:[]
 		});
 	},
+
+    
+
+    stagedRename:function() {
+        return changesOfType(
+            this.get("staged"),
+            ChangeType.Rename
+        );
+    },
+    stagedModify:function() {
+        return changesOfType(
+            this.get("staged"),
+            ChangeType.Modify
+        );
+    },
+    stagedDelete:function() {
+        return changesOfType(
+            this.get("staged"),
+            ChangeType.Delete
+        );
+    },
+    unstagedRename:function() {
+        return changesOfType(
+            this.get("unstaged"),
+            ChangeType.Rename
+        );
+    },
+    unstagedModify:function() {
+        return changesOfType(
+            this.get("unstaged"),
+            ChangeType.Modify
+        );
+    },
+    unstagedDelete:function() {
+        return changesOfType(
+            this.get("unstaged"),
+            ChangeType.Delete
+        );
+    },
+    
+
+
     
     loadStatus:function(fn) {
         var self = this;
@@ -137,7 +200,7 @@ var RepositoryStatus = Backbone.Model.extend({
             $.getJSON(
                 "/json/status/" + 
                     encodeURIComponent(
-                        this.get("path")
+                        this.get("path") + "/" + this.get("name")
                     ),
                 function(data) {
                     self.parseStatus(data);
