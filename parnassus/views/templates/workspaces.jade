@@ -11,5 +11,4 @@ ul.workspaces
         li(data-path = workspace.get("path") )
             div
                 h1= workspace.get("name")
-                h2!= workspace.get("path").replace(/([\/\\])/g, "$1<wbr>")
                 div.status

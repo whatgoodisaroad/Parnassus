@@ -4,7 +4,7 @@ $(function() {
 
         rs = new RepositoryStatus({ 
             name:"Big-js", 
-            path:"workspace/Big-js" 
+            path:"workspace/" + encodeURIComponent(repoName)
         }),
 
         request = parent.App.request;

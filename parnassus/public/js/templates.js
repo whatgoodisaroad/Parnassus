@@ -195,6 +195,27 @@ buf.push('></iframe>');
 }
 return buf.join("");
 }
+jade.templates["mini_status"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<dl class="mini-status"><dt>Branch</dt><dd>');
+var __val__ = repo.get("branch")
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</dd><dt>Staged Changes</dt><dd>');
+var __val__ = repo.get("staged").length
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</dd><dt>Unstaged Changes</dt><dd>');
+var __val__ = repo.get("unstaged").length
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</dd><dt>Untracked Files</dt><dd>');
+var __val__ = repo.get("untracked").length
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</dd></dl>');
+}
+return buf.join("");
+}
 jade.templates["workspace"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
@@ -223,10 +244,7 @@ buf.push(attrs({ 'data-path':(workspace.get("path")) }, {"data-path":true}));
 buf.push('><div><h1>');
 var __val__ = workspace.get("name")
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</h1><h2>');
-var __val__ = workspace.get("path").replace(/([\/\\])/g, "$1<wbr>")
-buf.push(null == __val__ ? "" : __val__);
-buf.push('</h2><div class="status"></div></div></li>');
+buf.push('</h1><div class="status"></div></div></li>');
     }
   } else {
     for (var $index in workspaces) {
@@ -237,10 +255,7 @@ buf.push(attrs({ 'data-path':(workspace.get("path")) }, {"data-path":true}));
 buf.push('><div><h1>');
 var __val__ = workspace.get("name")
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</h1><h2>');
-var __val__ = workspace.get("path").replace(/([\/\\])/g, "$1<wbr>")
-buf.push(null == __val__ ? "" : __val__);
-buf.push('</h2><div class="status"></div></div></li>');
+buf.push('</h1><div class="status"></div></div></li>');
    }
   }
 }).call(this);

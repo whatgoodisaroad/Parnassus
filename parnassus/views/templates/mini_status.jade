@@ -1,0 +1,12 @@
+dl.mini-status
+    dt Branch
+    dd= repo.get("branch")
+
+    dt Staged Changes
+    dd= repo.get("staged").length
+
+    dt Unstaged Changes
+    dd= repo.get("unstaged").length
+
+    dt Untracked Files
+    dd= repo.get("untracked").length

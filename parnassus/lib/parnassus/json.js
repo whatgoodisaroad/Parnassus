@@ -80,5 +80,17 @@ exports.list = function(req, res) {
         	);
         }
     );
-
 }
+
+exports.save = function(req, res) {
+    var 
+        file = req.params.path,
+        data = req.params.body;
+
+    console.log(file);
+
+    res.end();
+};
+
+
+

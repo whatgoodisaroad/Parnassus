@@ -72,20 +72,26 @@ var Router = Backbone.Router.extend({
                                 var ws = new RepositoryStatus();
                                 ws.parseStatus(status);
 
-                                var msg = (
-                                    "The branch is " + 
-                                    ws.get("branch") + 
-                                    ". There are " + 
-                                    ws.get("staged").length + 
-                                    " staged changes. There are " + 
-                                    ws.get("unstaged").length + 
-                                    " unstaged changes" + 
-                                    "There are " + 
-                                    ws.get("untracked").length + 
-                                    " untracked files"
+                                jade.render(
+                                    $w.find(".status")[0],
+                                    "mini_status",
+                                    { repo:ws }
                                 );
 
-                                $w.find(".status").text(msg);
+                                // var msg = (
+                                //     "The branch is " + 
+                                //     ws.get("branch") + 
+                                //     ". There are " + 
+                                //     ws.get("staged").length + 
+                                //     " staged changes. There are " + 
+                                //     ws.get("unstaged").length + 
+                                //     " unstaged changes. " + 
+                                //     "There are " + 
+                                //     ws.get("untracked").length + 
+                                //     " untracked files"
+                                // );
+
+                                // $w.find(".status").text(msg);
                              }
                          );
                     });
@@ -391,6 +397,10 @@ $(function() {
                     .html(content)
                     .end()
                 .modal();
+        },
+
+        hideModal:function() {
+            $("#blankModal").modal("hide");
         }
     };
 
@@ -405,10 +415,39 @@ $(function() {
                 "Clone Repository", 
                 "Enter the git URL of the repository to clone", 
                 function(url) { 
+                    App.modal(
+                        "Cloning", 
+                        $("<h2/><h3/><img/>")
+                            .filter("h2")
+                                .text("Cloning in progress...")
+                                .end()
+                            .filter("h3")
+                                .text(url)
+                                .end()
+                            .filter("img")
+                                .attr("src", "/img/spinner.gif")
+                                .css("margin", "0 auto")
+                                .end()
+                    );
+
                     $.getJSON(
                         "/json/clone/" + encodeURIComponent(url),
                         function(result) {
-                            alert(result.success);
+                            if (!result.success) {
+                                alert("Clone failed for some reason");
+                            }
+
+                            setTimeout(
+                                function() {
+                                    App.hideModal();
+
+                                    App.router.navigate(
+                                        "/",
+                                        { trigger:true }
+                                    );
+                                },
+                                700
+                            );
                         }
                     );
                 }
@@ -426,7 +465,7 @@ $(function() {
     App.request.attach("showAddFileDialog", function(data) {
         $.getJSON(
             "/json/list/" + data.repo, 
-            function(result) { console.log(result);
+            function(result) {
                 var ul = $("<ul/>");
 
                 $.each(
@@ -456,4 +495,18 @@ $(function() {
             }
         );
     });
+
+    App.request.attach("saveFile", function(data) {
+        $.post(
+            "/json/save", 
+            data,
+            function(res) {
+                alert("yep!");
+            },
+            "json"
+        )
+    });
+
+
+
 });

@@ -3,14 +3,17 @@ var
     path = require("path");
 
 exports.edit = function(req, res) {
+    var fullPath = process.cwd() + "/" + req.params.path;
+
     var r = function(body) {
         res.render(
-            "editor", 
-            { layout:false, body:body }
+            "editor", { 
+                layout:false, 
+                body:body, 
+                path:fullPath
+            }
         );
     };
-
-    var fullPath = process.cwd() + "/" + req.params.path;
 
     path.exists(
         fullPath, 
