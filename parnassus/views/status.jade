@@ -1,0 +1,24 @@
+!!!
+html(lang='en')
+    head
+        title Status
+        link(rel='stylesheet', href='/css/bootstrap.css')
+        link(rel='stylesheet', href='/css/font-awesome.css')
+        link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Belgrano')
+        link(rel='stylesheet', href='/css/status.css')
+    body
+        input#repoName(type = "hidden", value = repo)
+        div.changes
+        div.actions
+            a#addFile.btn.btn-mini(href = "#") Add File
+        
+        script(src = "/js/jquery-1.7.2.min.js")
+
+        script(src = "/js/underscore-min.js")
+        script(src = "/js/backbone-min.js")
+        
+        script(src = "/js/bootstrap.js")
+        script(src = "/js/bootstrap-dropdown.js")
+        script(src = "/js/model/repository.js")
+        
+        script(src = "/js/status.js")

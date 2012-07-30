@@ -13,14 +13,18 @@ if (process.platform == "win32") {
 }
 
 exports.cloneNew = function(url, fn) {
-    
+    cp.execFile(
+        "./clone.sh",
+        [ url.match(/\/([^\/]+)\.git$/)[1], url ],
+        fn
+    );
 };
 
 exports.listWorkspaces = function(fn) {
     cp.execFile(
         "./find.sh",
         [ root ],
-        function (err, stdout, stderr) {
+        function(err, stdout, stderr) {
             fn(
                 stdout
                     .replace(/\n\s*$/m, "")
@@ -48,3 +52,11 @@ exports.workspaceStatus = function(path, fn) {
         }
     );
 }
+
+exports.addFile = function(repo, path, fn) {
+    cp.exec(
+        "git add " + path,
+        { cwd:"workspace/" + repo + "/" + repo },
+        fn
+    );
+};

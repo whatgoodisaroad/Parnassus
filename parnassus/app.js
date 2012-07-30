@@ -18,7 +18,12 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(
+        express.errorHandler({ 
+            dumpExceptions:true, 
+            showStack:true 
+        })
+    );
 });
 
 app.configure('production', function(){
@@ -27,16 +32,24 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', routes.index);
+app.get('/',                        routes.index);
 
-app.get("/edit/:path", files.edit);
+app.get("/edit/:path",              files.edit);
 
-app.get("/json/workspaces", json.ws);
+app.get("/json/workspaces",         json.ws);
+app.get("/json/status/:path",       json.status);
+app.get("/json/clone/:url",         json.clone);
+app.get("/json/add/:repo/:path",    json.addFile);
+app.get("/json/list/:repo",         json.list);
 
-app.get("/json/status/:path", json.status);
 
-app.listen(3001);
 
+
+app.get("/status/:repo", files.status);
+
+
+
+app.listen(3000);
 console.log(
     "Express server listening on port %d in %s mode", 
     app.address().port, 

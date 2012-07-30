@@ -118,13 +118,20 @@ var ChangeTree = Backbone.Model.extend({
                 leaf = node.children.leaves[idx];
                 comps = leaf.pathComponents();
 
-                $("<li/>")
+                $("<li><div/><div/></li>")
                     .addClass("change")
-                    .text(comps[comps.length - 1])
+                    .attr("data-commitment", leaf.get("commitment"))
                     .attr(
                         "data-path", 
                         leaf.get("path")
                     )
+                    .find("div:first")
+                        .addClass("filename")
+                        .text(comps[comps.length - 1])
+                        .end()
+                    .find("div:last")
+                        .addClass("clearfix")
+                        .end()
                     .appendTo(ul);
             }
 
@@ -152,7 +159,28 @@ var RepositoryStatus = Backbone.Model.extend({
 		});
 	},
 
-    
+    changes:function() {
+        var 
+            list = _.chain([]),
+            keys = [ "staged", "unstaged", "untracked" ];
+
+        for (var idx = 0; idx < keys.length; ++idx) {
+            _.each(
+                this.get(keys[idx]),
+                function(elem) {
+                    elem.set("commitment", keys[idx]);
+                    return elem;
+                }
+            );
+
+            list = list.concat(
+                this.get(keys[idx])
+            );
+        }
+
+        return list.value();
+
+    },
 
     stagedRename:function() {
         return changesOfType(

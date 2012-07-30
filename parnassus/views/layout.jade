@@ -19,13 +19,9 @@ html(lang='en')
                         a(href="#", class="dropdown-toggle", data-toggle="dropdown") File
                             b(class="caret")
                         ul(class="dropdown-menu")
-                            li 
-                                a(href="#") git branch
-                            li 
+                            li.menu-git-clone
                                 a(href="#") git clone
                             li(class="divider")
-                            li 
-                                a(href="#") git commit
                             li 
                                 a(href="#") git push
                             li 
@@ -62,25 +58,51 @@ html(lang='en')
         div!= body
 
 
-    #confirmModal.modal.hide
-        .modal-header
-            button.close(type = "button", data-dismiss = "modal") ×
-            h3
-        .modal-body
-        .modal-footer
-            a.btn(href="#", data-dismiss="modal") No
-            a.btn.btn-primary(href="#") Yes
+    #modals
+        #confirmModal.modal.hide
+            .modal-header
+                button.close(type = "button", data-dismiss = "modal") ×
+                h3
+            .modal-body
+            .modal-footer
+                a.btn(href="#", data-dismiss="modal") No
+                a.btn.btn-primary(href="#") Yes
+        #promptModal.modal.hide
+            .modal-header
+                button.close(type = "button", data-dismiss = "modal") ×
+                h3
+            .modal-body
+                h2
+                    label.prompt(for = "promptResponse")
+                h2
+                    input#promptResponse.input-xlarge(type = "text")
+            .modal-footer
+                a.btn(href="#", data-dismiss="modal") Cancel
+                a.btn.btn-primary(href="#") Okay
+        #blankModal.modal.hide
+            .modal-header
+                button.close(type = "button", data-dismiss = "modal") ×
+                h3
+            .modal-body
+            .modal-footer
+                a.btn(href="#", data-dismiss="modal") Close
 
     
     script(src='/js/jquery-1.7.2.min.js')
+
     script(src='/js/underscore-min.js')
     script(src='/js/backbone-min.js')
+
     script(src='/js/bootstrap.min.js')
     script(src='/js/bootstrap-dropdown.js')
     script(src='/js/bootstrap-tab.js')
     script(src='/js/bootstrap-modal.js')
-    script(src="/js/templates.js")
+
+    script(src="/js/templates.js")    
+
     script(src="/js/model/repository.js")
     script(src="/js/model/ide-tab.js")
+    script(src="/js/model/actor.js")
+
     script(src='/js/app.js')
     

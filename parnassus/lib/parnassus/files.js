@@ -34,3 +34,11 @@ exports.edit = function(req, res) {
         }
     );
 };
+
+exports.status = function(req, res) {
+    res.render(
+        "status", 
+        { layout:false, repo:req.params.repo }
+    );
+};
+

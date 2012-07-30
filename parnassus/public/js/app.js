@@ -1,6 +1,6 @@
 ﻿
 
-var Workspace = Backbone.Model.extend({ });
+
 
 var WorkspaceList = Backbone.Collection.extend({ 
     url:"/json/workspaces"
@@ -118,8 +118,7 @@ var Router = Backbone.Router.extend({
     },
 
     openWorkspace:function(name, cont) {
-        //var path = "/Users/allenwy/Dropbox/source/web/parnassus/";
-        //var path = "/home/wyatt/Dropbox/source/web/parnassus/";
+        
         var path = "workspace/" + name;
 
         var router = this;
@@ -150,26 +149,14 @@ var Router = Backbone.Router.extend({
                 }
             );
 
-            var ct = new ChangeTree();
-
-            ct.init(rs.stagedModify());
-            $(".staged.modified").html(ct.asUl());
-
-            ct.init(rs.unstagedModify());
-            $(".unstaged.modified").html(ct.asUl());
+            updateStatus(rs);
 
             $(".changeset ul li[data-path]").click(function() { 
                 var item = this;
 
-                App.confirm(
-                    "Stage?", 
-                    "Do you want to stage the file before editing?", 
-                    function() {
-                        router.navigate(
-                            "workspace/" + rs.get("name") + "/" + $(item).data("path"), 
-                            { trigger:true }
-                        );
-                    }
+                router.navigate(
+                    "workspace/" + rs.get("name") + "/" + $(item).data("path"), 
+                    { trigger:true }
                 );
             });
 
@@ -232,6 +219,30 @@ var Router = Backbone.Router.extend({
                             .end()
                         .find("span:last")
                             .addClass("icon-remove")
+                            .click(function() {
+                                var 
+                                    a = $(this).parents("a"),
+                                    li = a.parents("li");
+
+                                App.confirm(
+                                    "Close Tab", 
+                                    "Close \"" + a.find("span:first").text() + "\"?", 
+                                    function() { 
+                                        if (li.is(".active")) {
+                                            li.siblings(":first").find("a").trigger("click");
+                                        }
+
+                                        $(a.data("target")).remove();
+                                        li.remove();
+
+                                        if (!$("#ide-tabs li").length) {
+                                            router.navigate(
+                                                "workspace/" + name
+                                            );
+                                        }
+                                    }
+                                );
+                            })
                             .end()
                         .end()
                     .prependTo("#ide-tabs")
@@ -252,6 +263,18 @@ var Router = Backbone.Router.extend({
         }
     }
 });
+
+
+
+function updateStatus(rs) {
+    var ct = new ChangeTree();
+
+    ct.init(rs.stagedModify());
+    $(".staged.modified").html(ct.asUl());
+
+    ct.init(rs.unstagedModify());
+    $(".unstaged.modified").html(ct.asUl());
+}
 
 function updateBreadcrumbs() {
     setTimeout(
@@ -295,13 +318,18 @@ $(function() {
     App = {
         Views:{},
         Controllers:{},
+        
+
+        router:new Router(),
+        request:new Actor(),
+
+
         init:function() {
-            new Router();
             Backbone.history.start();
         },
 
         confirm:function(title, msg, yfn, nfn) {
-            $("#confirmModal")  
+            $("#confirmModal")
                 .find(".modal-header")
                     .text(title)
                     .end()
@@ -315,6 +343,8 @@ $(function() {
                         if ($.isFunction(yfn)) {
                             yfn();
                         }
+
+                        $("#confirmModal").modal("hide");
                     })
                     .end()
                 .find(".btn:not(.btn-primary)")
@@ -324,7 +354,41 @@ $(function() {
                         if ($.isFunction(nfn)) {
                             nfn();
                         }
+
+                        $("#confirmModal").modal("hide");
                     })
+                    .end()
+                .modal();
+        },
+
+        prompt:function(title, prompt, fn) {
+            $("#promptModal")
+                .find(".modal-header")
+                    .text(title)
+                    .end()
+                .find(".modal-body label")
+                    .html(prompt)
+                    .end()
+                .find(".btn-primary")
+                    .click(function(evt) {
+                        evt.preventDefault();
+                        $(this).unbind();
+                        if ($.isFunction(fn)) {
+                            fn($("#promptResponse").val());
+                        }
+                        $("#promptModal").modal("hide")
+                    })
+                    .end()
+                .modal();
+        },
+
+        modal:function(title, content) {
+            $("#blankModal")
+                .find(".modal-header")
+                    .text(title)
+                    .end()
+                .find(".modal-body")
+                    .html(content)
                     .end()
                 .modal();
         }
@@ -333,4 +397,63 @@ $(function() {
     App.init();
     
     updateBreadcrumbs();
+
+    $(".menu-git-clone")
+        .click(function(evt) {
+            evt.preventDefault();
+            App.prompt(
+                "Clone Repository", 
+                "Enter the git URL of the repository to clone", 
+                function(url) { 
+                    $.getJSON(
+                        "/json/clone/" + encodeURIComponent(url),
+                        function(result) {
+                            alert(result.success);
+                        }
+                    );
+                }
+            );
+        }
+    );
+
+    App.request.attach("openFile", function(data) {
+        App.router.navigate(
+            "workspace/" + data.repo + "/" + data.path,
+            { trigger:true }
+        );
+    });
+
+    App.request.attach("showAddFileDialog", function(data) {
+        $.getJSON(
+            "/json/list/" + data.repo, 
+            function(result) { console.log(result);
+                var ul = $("<ul/>");
+
+                $.each(
+                    result, 
+                    function(idx, elem) {
+                        $("<li><a/></li>")
+                            .find("a")
+                                .text(elem)
+                                .attr("href", "#")
+                                .attr("data-dismiss", "modal")
+                                .click(function(evt) {
+                                    evt.preventDefault();
+                                    App.router.navigate(
+                                        "workspace/" + data.repo + "/" + elem,
+                                        { trigger:true }
+                                    );
+                                })
+                                .end()
+                            .appendTo(ul);
+                    }
+                );
+
+                App.modal(
+                    "Add file", 
+                    ul
+                );
+            }
+        );
+    });
 });

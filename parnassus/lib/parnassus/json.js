@@ -1,5 +1,6 @@
 var 
-    parnassus = require("./");
+    parnassus = require("./"),
+    cp = require("child_process");
 
 exports.ws = function(req, res) {
 	res.writeHead(200, { "Content-Type":"application/json" });
@@ -26,3 +27,58 @@ exports.status = function(req, res) {
 		}
 	);
 };
+
+
+exports.clone = function(req, res) {
+	parnassus.cloneNew(
+		req.params.url,
+		function(err, stdout, stderr) {
+			res.end(
+				JSON.stringify({
+					success:!err,
+					stdout:stdout,
+					stderr:stderr
+				})
+			);
+		}
+	);
+};
+
+exports.addFile = function(req, res) {
+	parnassus.addFile(
+		req.params.repo,
+		req.params.path,
+		function(err, stdout, stderr) {
+			res.end(
+				JSON.stringify({
+					success:!err,
+					stdout:stdout,
+					stderr:stderr
+				})
+			);
+		}
+	);
+};
+
+exports.resetFile = function(req, res) {
+
+};
+
+exports.list = function(req, res) {
+    var 
+        repo = req.params.repo,
+        path = "workspace/" + repo + "/" + repo;
+
+    cp.exec(
+        "find . | grep -v '.git' | sed s/.\\\\///",
+        { cwd:path },
+        function(error, stdout, stderr) {
+            res.end(
+            	JSON.stringify(
+            		stdout.split("\n")
+            	)
+        	);
+        }
+    );
+
+}

@@ -5,16 +5,12 @@ html(lang='en')
   body
     #main-edit= body
     script(src='/js/jquery-1.7.2.min.js')
-    script(src='/js/underscore-min.js')
-    script(src='/js/backbone-min.js')
-    script(src='/js/bootstrap.min.js')
-    script(src='/js/bootstrap-dropdown.js')
+    script(src='/js/jquery.hotkeys.js')
+    
     script(src="/js/ace/ace.js")
     script(src="/js/ace/theme-twilight.js")
     script(src="/js/ace/mode-javascript.js")
-    script(src="/js/templates.js")
-    script(src="/js/model/repository.js")
-    script(src='/js/app.js')
+    
     script 
         $(function() { 
             var JavaScriptMode = require("ace/mode/javascript").Mode;
@@ -23,4 +19,20 @@ html(lang='en')
 
             editor.setTheme("ace/theme/twilight");
             editor.getSession().setMode(new JavaScriptMode());
+
+            $(window).keypress(function(event) {
+                if (    !(event.which == 115 && event.ctrlKey) 
+                    &&  !(event.which == 19)) { 
+                    return true;
+                }
+
+                parent.App.request.post(
+                    "saveFile", 
+                    { }
+                );
+                
+                event.preventDefault();
+                return false;
+            });
+
         });

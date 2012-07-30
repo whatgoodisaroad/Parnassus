@@ -200,35 +200,9 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="main-topbar"><div class="breadcrumbs"></div><div class="clearfix"></div></div><div class="changeset"><div> <h1>Staged</h1><h2>Modified</h2><div class="staged modified"></div></div><div><h1>Not staged</h1><h2>Modified</h2><div class="unstaged modified"></div><h2>Deleted</h2><ul class="unstaged deleted">');
-// iterate unstaged.deleted
-;(function(){
-  if ('number' == typeof unstaged.deleted.length) {
-    for (var $index = 0, $$l = unstaged.deleted.length; $index < $$l; $index++) {
-      var mod = unstaged.deleted[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'data-path':(root + mod.get("path")) }, {"data-path":true}));
-buf.push('>');
-var __val__ = mod.get("path")
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-    }
-  } else {
-    for (var $index in unstaged.deleted) {
-      var mod = unstaged.deleted[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'data-path':(root + mod.get("path")) }, {"data-path":true}));
-buf.push('>');
-var __val__ = mod.get("path")
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-   }
-  }
-}).call(this);
-
-buf.push('</ul></div><div><button id="addFileButton" class="btn"> <text>Add File</text><span class="icon-file"></span></button></div></div><div class="open-files"><ul id="ide-tabs" class="nav nav-tabs"></ul><div id="tab-content" class="tab-content"></div></div>');
+buf.push('<div class="main-topbar"><div class="breadcrumbs"></div><div class="clearfix"></div></div><div class="changeset"><div id="status"><iframe');
+buf.push(attrs({ 'src':("/status/" + name), 'frameBorder':(0) }, {"src":true,"frameBorder":true}));
+buf.push('></iframe></div></div><div class="open-files"><ul id="ide-tabs" class="nav nav-tabs"></ul><div id="tab-content" class="tab-content"></div></div>');
 }
 return buf.join("");
 }

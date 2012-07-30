@@ -2,22 +2,8 @@
     .breadcrumbs
     .clearfix
 .changeset
-    div 
-        h1 Staged
-        h2 Modified
-        div.staged.modified
-    div
-        h1 Not staged
-        h2 Modified
-        div.unstaged.modified
-        h2 Deleted
-        ul.unstaged.deleted
-            for mod in unstaged.deleted
-                li(data-path = root + mod.get("path"))= mod.get("path")
-    div
-        button#addFileButton.btn 
-            text Add File
-            span.icon-file
+    #status
+        iframe(src = "/status/" + name, frameBorder = 0)
 .open-files
     ul#ide-tabs.nav.nav-tabs
     div#tab-content.tab-content

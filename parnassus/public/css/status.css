@@ -1,0 +1,68 @@
+html, body { background:transparent; }
+
+.changes h1,
+.changes h2 {
+    padding:0.4em 0 0.4em 0.4em;
+}
+
+.changes ul {
+    padding:0 0 0 0.8em;
+    margin:0;
+    border-left:1px dotted rgba(0, 0, 0, 0.5);
+}
+
+.changes ul li {
+    list-style:none;
+    cursor:pointer;
+    margin:0.4em 0
+}
+
+.changes ul li.folder .folder-toggle:before {
+    content:"\f0da";
+    font-family:"FontAwesome";
+    display:inline-block;
+    margin-right:4px;
+}
+
+.changes ul li.folder .folder-toggle.open:before {
+    content:"\f0d7";
+}
+
+.changes h1,
+.changes h2,
+.changes h3 {
+    font-size:12px;
+    line-height:16px;
+    font-weight:normal;
+    display:block;
+}
+
+.changes h1 {
+    background:rgba(10, 10, 10, 0.5);
+    border-bottom:1px solid #2a2a2a;
+
+    margin-top:2em;
+    border-top:2px solid #555;
+}
+.changes h2 {
+    background:rgba(10, 10, 10, 0.3);
+    border-bottom:1px solid #2a2a2a;
+}
+
+.changes ul li.folder { color:#aaa; }
+.changes ul li.folder h3 { background:rgba(0,0,0,0.1); }
+
+.changes .change[data-commitment = "staged"]     { color:lime; }
+.changes .change[data-commitment = "unstaged"]   { color:cyan; }
+.changes .change[data-commitment = "ignored"]    { color:coral; }
+
+.hidden { display:none; }
+
+.change .filename { float:left; cursor:pointer; }
+.change .change-actions { float:right; margin-right:1em; }
+
+
+#addFile { 
+    float:right;
+    margin-right:1.1em;
+}

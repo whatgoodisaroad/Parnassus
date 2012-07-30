@@ -1,5 +1,4 @@
 #! /bin/bash
-cd workspace
-mkdir $1
-cd $1
-git clone $2
+mkdir -p workspace/$1/$1
+cd workspace/$1
+git clone $2 

@@ -29,40 +29,6 @@ body {
     margin:2px 4px;
 }
 
-#gitStatus {
-    border:1px solid black;
-    border-top:none;
-    
-    background:#222;
-    padding:4px 6px 24px 6px;
-    color:#fff;
-    text-shadow: 0px 1px 1px #000;
-    
-    -moz-border-radius-topleft: 0px;
-    -moz-border-radius-topright: 0px;
-    -moz-border-radius-bottomright: 2px;
-    -moz-border-radius-bottomleft: 2px;
-    -webkit-border-radius: 0px 0px 2px 2px;
-    border-radius: 0px 0px 2px 2px;
-}
-
-#gitStatus h1 {
-    font-size:12px;
-    line-height:14px;
-    font-weight:normal;
-    padding:0 !important;
-}
-
-#gitStatus .staged ul li { color:#00ff00; }
-#gitStatus .notStaged ul li, #gitStatus .untracked ul li { color:#ff0000; }
-
-#text, #editor { 
-    border:1px solid black; 
-    height:500px;
-    width:700px;
-
-    background:#ddd;
-}
 
 .navbar .nav > li > a { padding:6px 10px; }
 
@@ -169,70 +135,9 @@ body.route-edit {
     bottom:1em;
     position:absolute;
 
-    overflow:scroll;
+    
 }
 
-    .route-edit .changeset h1,
-    .route-edit .changeset h2 {
-        padding:0.4em 0 0.4em 0.4em;
-    }
-
-    .route-edit .changeset ul {
-        padding:0 0 0 0.8em;
-        margin:0;
-        border-left:1px dotted rgba(0, 0, 0, 0.5);
-    }
-
-    .route-edit .changeset ul li {
-        list-style:none;
-        cursor:pointer;
-        margin:0.4em 0
-    }
-
-    .route-edit .changeset ul li.folder {
-        color:#aaa;
-    }
-
-    .route-edit .changeset ul li.folder .folder-toggle:before {
-        content:"\f0da";
-        font-family:"FontAwesome";
-        display:inline-block;
-        margin-right:4px;
-    }
-
-    .route-edit .changeset ul li.folder .folder-toggle.open:before {
-        content:"\f0d7";
-    }
-
-
-    .route-edit .changeset ul li.change {
-        color:#fff;
-    }
-
-    .route-edit .changeset ul li.change:hover {
-        
-    }
-
-    .route-edit .changeset h1,
-    .route-edit .changeset h2,
-    .route-edit .changeset h3 {
-        font-size:12px;
-        line-height:16px;
-        font-weight:normal;
-        display:block;
-    }
-
-    .route-edit .changeset h1 {
-        background:rgba(10, 10, 10, 0.5);
-        border-bottom:1px solid #2a2a2a;
-
-        margin-top:2em;
-        border-top:2px solid #555;
-    }
-    .route-edit .changeset h2 {
-        background:rgba(10, 10, 10, 0.3);
-        border-bottom:1px solid #2a2a2a;
-    }
     
 .route-edit .open-files {
     background:#fff;
@@ -252,13 +157,18 @@ body.route-edit {
     background:url("/img/classy_fabric.png");
 }
 
+#tab-content {
+    background:#333;
+    padding-top:1em;
+}
+
 
 .tab-content > div { display:none; }
 .tab-content > div.active { display:block; }
 
 .tab-content > div { 
     position:absolute;
-    top:36px;
+    top:40px;
     bottom:0;
     left:0;
     right:0;
@@ -319,3 +229,76 @@ body.route-edit {
     float:right;
     margin-right:4em;
 }
+
+
+
+
+.staged-changes .change { color:lime; }
+.unstaged-changes .change { color:coral; }
+
+
+
+
+
+
+/* Tab Nonsense */
+
+ul.nav-tabs { 
+    padding-top:4px; 
+    padding-left:1em;
+    border-bottom:1px solid #555;
+}
+
+
+ul.nav-tabs li { position:relative; z-index:0; }
+
+ul.nav-tabs li a {
+    border-top-right-radius: 20px 60px;
+    border-top-left-radius: 20px 60px;
+
+    text-shadow: 0px 1px 1px #000000;
+
+
+    padding:4px 16px;
+    position:relative;
+
+    cursor:pointer;
+
+    background: #333333; /* Old browsers */
+    background: -moz-linear-gradient(top,  #333333 0%, #333333 80%, #222222 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#333333), color-stop(80%,#333333), color-stop(100%,#222222)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #333333 0%,#333333 80%,#222222 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #333333 0%,#333333 80%,#222222 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #333333 0%,#333333 80%,#222222 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #333333 0%,#333333 80%,#222222 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#222222',GradientType=0 ); /* IE6-9 */
+
+
+    
+
+    border:1px solid #555 !important;
+    
+
+    color:#fff !important;
+
+    z-index:1;
+}
+
+ul.nav-tabs li.active a { border-bottom-color:#333!important; }
+
+
+ul.nav-tabs li a:hover,
+.nav-tabs > .active > a, 
+.nav-tabs > .active > a:hover {
+    background: #444444; /* Old browsers */
+    background-color: #444444; /* Old browsers */
+    background: -moz-linear-gradient(top,  #444444 0%, #333333 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#444444), color-stop(100%,#333333)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #444444 0%,#333333 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #444444 0%,#333333 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #444444 0%,#333333 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #444444 0%,#333333 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#333333',GradientType=0 ); /* IE6-9 */
+}
+
+
