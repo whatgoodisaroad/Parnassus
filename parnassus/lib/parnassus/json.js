@@ -1,6 +1,7 @@
 var 
     parnassus = require("./"),
-    cp = require("child_process");
+    cp = require("child_process"),
+    fs = require("fs");
 
 exports.ws = function(req, res) {
 	res.writeHead(200, { "Content-Type":"application/json" });
@@ -84,12 +85,21 @@ exports.list = function(req, res) {
 
 exports.save = function(req, res) {
     var 
-        file = req.params.path,
-        data = req.params.body;
+        file = req.body.path,
+        data = req.body.body;
 
-    console.log(file);
-
-    res.end();
+    fs.writeFile(
+        file, 
+        data, 
+        function(err) {
+            res.end(
+                JSON.stringify({ 
+                    success:!err,
+                    msg:err
+                })
+            );
+        }
+    );
 };
 
 

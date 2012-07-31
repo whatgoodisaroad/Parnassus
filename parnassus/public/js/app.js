@@ -501,7 +501,8 @@ $(function() {
             "/json/save", 
             data,
             function(res) {
-                alert("yep!");
+                //alert(res.success ? "Successfully saved" : ("Failed to save") + res.msg);
+                App.request.post("refreshStatus");
             },
             "json"
         )

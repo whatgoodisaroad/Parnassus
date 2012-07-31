@@ -58,6 +58,8 @@ body.route-edit {
     font-size:10pt;
 }
 
+#status > iframe { height:100%; }
+
 .route-index #main ul li .status dt,
 .route-index #main ul li .status dd {
     display:inline-block;
