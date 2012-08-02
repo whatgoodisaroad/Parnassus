@@ -3,6 +3,19 @@ var
     cp = require("child_process"),
     fs = require("fs");
 
+function gitVerbOnFile(verb, repo, path, res) {
+    cp.exec(
+        [ "git", verb, path ].join(" "),
+        { cwd:[ "workspace", repo, repo ].join("/") },
+        function(err, stdout, stderr) {
+            res.end(JSON.stringify({
+                success:!err,
+                msg:err
+            }));
+        }
+    );
+}
+
 exports.ws = function(req, res) {
 	res.writeHead(200, { "Content-Type":"application/json" });
     parnassus.listWorkspaces(
@@ -61,8 +74,22 @@ exports.addFile = function(req, res) {
 	);
 };
 
-exports.resetFile = function(req, res) {
+exports.checkoutFile = function(req, res) {
+    gitVerbOnFile(
+        "checkout", 
+        req.body.repo, 
+        req.body.file, 
+        res
+    );
+}
 
+exports.resetFile = function(req, res) {
+    gitVerbOnFile(
+        "reset", 
+        req.params.repo, 
+        req.params.path, 
+        res
+    );
 };
 
 exports.list = function(req, res) {

@@ -3,7 +3,8 @@ html(lang='en')
   head
     style html, body { margin:0; } #main-edit { width:100%; height:100%; }
   body
-    input#path(type = "hidden", value = path)
+    input#fullPath(type = "hidden", value = path)
+    input#file(type = "hidden", value = file)
     #main-edit= body
     script(src='/js/jquery-1.7.2.min.js')
     script(src='/js/jquery.hotkeys.js')
@@ -12,34 +13,6 @@ html(lang='en')
     script(src="/js/ace/theme-twilight.js")
     script(src="/js/ace/mode-javascript.js")
     
-    script 
-        $(function() { 
-            var JavaScriptMode = require("ace/mode/javascript").Mode;
+    script(src="/js/shortcut.js")
 
-            var editor = ace.edit("main-edit");
-
-            editor.setTheme("ace/theme/twilight");
-            editor.getSession().setMode(new JavaScriptMode());
-
-            $(window).keypress(function(event) {
-                if (    !(event.which == 115 && (
-                            navigator.platform.match("Mac") ? 
-                                event.metaKey : 
-                                event.ctrlKey
-                        )) 
-                    &&  !(event.which == 19)) { 
-                    return true;
-                }
-
-                parent.App.request.post(
-                    "saveFile", { 
-                        path:$("#path").val(),
-                        body:editor.getSession().getValue()
-                    }
-                );
-                
-                event.preventDefault();
-                return false;
-            });
-
-        });
+    script(src="/js/editor.js")

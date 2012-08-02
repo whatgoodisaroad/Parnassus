@@ -28,7 +28,7 @@ $(function() {
                     );
                 };
 
-                $t.click(open);
+                $t.find(".filename").click(open);
 
                 $("<div><a><span/><span class='caret'></span></a><ul/></div>")
                     .addClass("btn-group change-actions")
@@ -53,6 +53,35 @@ $(function() {
                             .click(open)
                             .end()
                 );
+
+
+                if ($t.data("commitment") == "unstaged") {
+                    $t.find("ul").append(
+                        $("<li><a/></li>")
+                            .find("a")
+                                .text("Undo Changes (Checkout)")
+                                .click(function(evt) {
+                                    evt.preventDefault();
+                                    request.post(
+                                        "confirm", {
+                                            title:"Undo changes?",
+                                            message:"Undo changes to " + $t.data("path") + "?",
+                                            yfn:function() {
+                                                request.post(
+                                                    "checkoutFile", {
+                                                        path:$t.data("path"),
+                                                        repo:repoName
+                                                    }
+                                                );
+                                            }
+                                        }
+                                    );
+                                    
+                                })
+                                .end()
+                    );
+                }
+                
             });
         });
     }

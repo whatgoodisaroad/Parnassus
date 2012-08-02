@@ -10,7 +10,8 @@ exports.edit = function(req, res) {
             "editor", { 
                 layout:false, 
                 body:body, 
-                path:fullPath
+                path:fullPath,
+                file:req.params.path
             }
         );
     };

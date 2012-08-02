@@ -20,13 +20,19 @@ var Actor = Backbone.Model.extend({
             })
         );
 
-        var proc = this.processors[key];
-        if (proc) {
-            proc(meta);
+        var procs = this.processors[key];
+        if (procs) {
+            for (var idx = 0; idx < procs.length; ++idx) {
+                procs[idx](meta);
+            }
         }
     },
 
     attach:function(key, fn) {
-        this.processors[key] = fn;
+        if (!this.processors[key]) {
+            this.processors[key] = [];
+        }
+
+        this.processors[key].push(fn);
     }
 });

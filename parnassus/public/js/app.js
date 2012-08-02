@@ -212,7 +212,8 @@ var Router = Backbone.Router.extend({
                         .attr({ 
                             "data-target":"#ide-tab-" + tab.cid, 
                             "data-toggle":"tab",
-                            "data-path":tab.get("path")
+                            "data-path":tab.get("path"),
+                            "data-repo":name
                         })
                         .click(function(evt) {
                             evt.preventDefault();
@@ -501,13 +502,46 @@ $(function() {
             "/json/save", 
             data,
             function(res) {
-                //alert(res.success ? "Successfully saved" : ("Failed to save") + res.msg);
                 App.request.post("refreshStatus");
             },
             "json"
         )
     });
 
+    App.request.attach("checkoutFile", function(data) {
+        $.post(
+            "/json/checkout",
+            { repo:data.repo, file:data.path },
+            function(res) {
+                if (res.success) {
+                    App.request.post("refreshStatus");
+                    App.request.post("fileChanged", data);
+                }
+                else {
+                    alert("Checkout failed");
+                }
+            },
+            "json"
+        );
+    });
 
+    App.request.attach("confirm", function(data) {
+        App.confirm(
+            data.title,
+            data.message,
+            data.yfn,
+            data.nfn
+        );
+    });
+
+    App.request.attach("saveOpenBuffer", function(data) {
+        var tab = $("#ide-tabs li.active a");
+
+        if (tab.length) {
+            App.request.post("saveFile", {
+                
+            });
+        }
+    });
 
 });

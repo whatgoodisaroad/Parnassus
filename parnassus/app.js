@@ -34,21 +34,22 @@ app.use(express.bodyParser());
 
 // Routes
 
-app.get('/',                        routes.index);
+app.get('/',                    routes.index);
 
-app.get("/edit/:path",              files.edit);
+app.get("/edit/:path",          files.edit);
 
-app.get("/json/workspaces",         json.ws);
-app.get("/json/status/:path",       json.status);
-app.get("/json/clone/:url",         json.clone);
-app.get("/json/add/:repo/:path",    json.addFile);
-app.get("/json/list/:repo",         json.list);
+app.get("/json/workspaces",     json.ws);
+app.get("/json/status/:path",   json.status);
+app.get("/json/clone/:url",     json.clone);
 
-app.post("/json/save",              json.save)
+app.get("/json/list/:repo",     json.list);
+
+app.post("/json/checkout",      json.checkoutFile);
+app.post("/json/save",          json.save);
 
 
 
-app.get("/status/:repo", files.status);
+app.get("/status/:repo",        files.status);
 
 
 
