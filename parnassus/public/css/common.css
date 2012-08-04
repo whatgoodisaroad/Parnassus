@@ -1,0 +1,23 @@
+.filetree-node {
+    margin-left:1.2em;
+}
+
+.filetree-node li {
+    list-style:none;
+    cursor:pointer;
+}
+
+.filetree-node li.folder .folder-children {
+    border-left:1px dotted #888;
+}
+
+.filetree-node li.folder .folder-toggle:before {
+    content:"\f0da";
+    font-family:"FontAwesome";
+    display:inline-block;
+    margin-right:4px;
+}
+
+.filetree-node li.folder .folder-toggle.open:before {
+    content:"\f0d7";
+}

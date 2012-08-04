@@ -184,6 +184,110 @@ jade.render = function(node, template, data) {
   node.innerHTML = tmp;
 };
 
+jade.templates["filetree_node"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+var node_mixin = function(node){
+var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
+buf.push('<ul class="filetree-node">');
+// iterate node.children
+;(function(){
+  if ('number' == typeof node.children.length) {
+    for (var name = 0, $$l = node.children.length; name < $$l; name++) {
+      var child = node.children[name];
+
+if ( closeAll)
+{
+buf.push('<li class="folder"><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('closed') }, {"for":true}));
+buf.push('>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') + ' ' + ('hidden') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+else
+{
+buf.push('<li class="folder"><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('open') }, {"for":true}));
+buf.push('>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+    }
+  } else {
+    for (var name in node.children) {
+      var child = node.children[name];
+
+if ( closeAll)
+{
+buf.push('<li class="folder"><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('closed') }, {"for":true}));
+buf.push('>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') + ' ' + ('hidden') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+else
+{
+buf.push('<li class="folder"><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('open') }, {"for":true}));
+buf.push('>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+   }
+  }
+}).call(this);
+
+// iterate node.leaves
+;(function(){
+  if ('number' == typeof node.leaves.length) {
+    for (var name = 0, $$l = node.leaves.length; name < $$l; name++) {
+      var file = node.leaves[name];
+
+buf.push('<li class="file">');
+var __val__ = file
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</li>');
+    }
+  } else {
+    for (var name in node.leaves) {
+      var file = node.leaves[name];
+
+buf.push('<li class="file">');
+var __val__ = file
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</li>');
+   }
+  }
+}).call(this);
+
+buf.push('</ul>');
+};
+node_mixin(root);
+}
+return buf.join("");
+}
 jade.templates["ide_tab"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];

@@ -1,0 +1,16 @@
+mixin node(node)
+    ul.filetree-node
+        each child, name in node.children
+            if closeAll
+                li.folder
+                    div.folder-toggle.closed(for = name)= name
+                    div(for = name).folder-children.hidden
+                        mixin node(child)
+            else
+                li.folder
+                    div.folder-toggle.open(for = name)= name
+                    div(for = name).folder-children
+                        mixin node(child)
+        each file, name in node.leaves
+            li.file!= file
+mixin node(root)

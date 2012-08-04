@@ -90,17 +90,7 @@ $(function() {
 
     request.attach("refreshStatus", loadStatus);
 
-    $(document)
-        .on(
-            "click", 
-            ".folder-toggle", 
-            function() {
-                $(this)
-                    .toggleClass("open")
-                    .next()
-                        .toggleClass("hidden");
-            }
-        );
+    
 
     $("#addFile").click(function(evt) {
         evt.preventDefault();

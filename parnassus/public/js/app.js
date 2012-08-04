@@ -400,6 +400,16 @@ $(function() {
                 .modal();
         },
 
+        jadeModal:function(title, template, data) {
+            App.modal(title, "");
+
+            jade.render(
+                $("#blankModal .modal-body")[0],
+                template, 
+                data
+            );
+        },
+
         hideModal:function() {
             $("#blankModal").modal("hide");
         }
@@ -466,33 +476,28 @@ $(function() {
     App.request.attach("showAddFileDialog", function(data) {
         $.getJSON(
             "/json/list/" + data.repo, 
-            function(result) {
-                var ul = $("<ul/>");
+            function(files) {
+                
+                var ft = new FileTree();
+                for (var idx = 0; idx < files.length; ++idx) {
+                    ft.setFileByPath(
+                        files[idx],
+                        "<a href=\"" 
+                            + [ "#workspace", data.repo, files[idx] ].join("/") 
+                            + "\">" 
+                            + files[idx] 
+                            + "</a>"
+                    );
+                }
 
-                $.each(
-                    result, 
-                    function(idx, elem) {
-                        $("<li><a/></li>")
-                            .find("a")
-                                .text(elem)
-                                .attr("href", "#")
-                                .attr("data-dismiss", "modal")
-                                .click(function(evt) {
-                                    evt.preventDefault();
-                                    App.router.navigate(
-                                        "workspace/" + data.repo + "/" + elem,
-                                        { trigger:true }
-                                    );
-                                })
-                                .end()
-                            .appendTo(ul);
-                    }
-                );
-
-                App.modal(
+                App.jadeModal(
                     "Add file", 
-                    ul
+                    "filetree_node", 
+                    { root:ft.root, closeAll:true }
                 );
+
+                $("#blankModal .modal-body a")
+                    .click(App.hideModal);
             }
         );
     });

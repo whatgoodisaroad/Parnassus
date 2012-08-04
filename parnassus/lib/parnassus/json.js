@@ -98,12 +98,12 @@ exports.list = function(req, res) {
         path = "workspace/" + repo + "/" + repo;
 
     cp.exec(
-        "find . | grep -v '.git' | sed s/.\\\\///",
+        "find . -type f | grep -v '.git' | sed s/.\\\\///",
         { cwd:path },
         function(error, stdout, stderr) {
             res.end(
             	JSON.stringify(
-            		stdout.split("\n")
+            		stdout.replace(/\n$/m, "").split("\n")
             	)
         	);
         }

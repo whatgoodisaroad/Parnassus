@@ -33,7 +33,7 @@ Change.Modify = function(path) {
 Change.Delete = function(path) {
     return new Change({
         changeType:ChangeType.Delete,
-        path:path
+        path:path--
     });
 };
 
