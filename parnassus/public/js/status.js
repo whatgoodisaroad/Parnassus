@@ -80,6 +80,31 @@ $(function() {
                                 })
                                 .end()
                     );
+
+                    $t.find("ul").append(
+                        $("<li><a/></li>")
+                            .find("a")
+                                .text("Stage Changes (Add)")
+                                .click(function(evt) {
+                                    evt.preventDefault();
+                                    request.post(
+                                        "confirm", {
+                                            title:"Stage changes?",
+                                            message:"Stage changes in " + $t.data("path") + "?",
+                                            yfn:function() {
+                                                request.post(
+                                                    "addFile", {
+                                                        path:$t.data("path"),
+                                                        repo:repoName
+                                                    }
+                                                );
+                                            }
+                                        }
+                                    );
+                                    
+                                })
+                                .end()
+                    );
                 }
                 
             });
@@ -96,6 +121,14 @@ $(function() {
         evt.preventDefault();
         request.post(
             "showAddFileDialog",
+            { repo:repoName }
+        );
+    });
+
+    $("#commit").click(function(evt) {
+        evt.preventDefault();
+        request.post(
+            "commit",
             { repo:repoName }
         );
     });

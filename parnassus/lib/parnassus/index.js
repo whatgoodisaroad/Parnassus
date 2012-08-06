@@ -60,3 +60,11 @@ exports.addFile = function(repo, path, fn) {
         fn
     );
 };
+
+exports.commit = function(repo, msg, fn) {
+    cp.exec(
+        "git commit -m \"" + msg + "\"",
+        { cwd:"workspace/" + repo + "/" + repo },
+        fn
+    );
+}

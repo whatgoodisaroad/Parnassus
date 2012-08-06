@@ -81,7 +81,16 @@ exports.checkoutFile = function(req, res) {
         req.body.file, 
         res
     );
-}
+};
+
+exports.addFile = function(req, res) {
+    gitVerbOnFile(
+        "add", 
+        req.body.repo, 
+        req.body.file, 
+        res
+    );
+};
 
 exports.resetFile = function(req, res) {
     gitVerbOnFile(
@@ -129,5 +138,22 @@ exports.save = function(req, res) {
     );
 };
 
+exports.commit = function(req, res) {
+    var
+        repo = req.body.repo,
+        msg = req.body.message;
 
+    parnassus.commit(
+        repo,
+        msg,
+        function(err) {
+            res.end(
+                JSON.stringify({ 
+                    success:!err,
+                    msg:err
+                })
+            );
+        }
+    );
+};
 

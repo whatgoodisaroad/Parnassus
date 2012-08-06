@@ -45,7 +45,10 @@ app.get("/json/clone/:url",     json.clone);
 app.get("/json/list/:repo",     json.list);
 
 app.post("/json/checkout",      json.checkoutFile);
+app.post("/json/add",           json.addFile);
 app.post("/json/save",          json.save);
+app.post("/json/commit",        json.commit);
+
 
 
 

@@ -530,6 +530,22 @@ $(function() {
         );
     });
 
+    App.request.attach("addFile", function(data) {
+        $.post(
+            "/json/add",
+            { repo:data.repo, file:data.path },
+            function(res) {
+                if (res.success) {
+                    App.request.post("refreshStatus");
+                }
+                else {
+                    alert("Add failed");
+                }
+            },
+            "json"
+        );
+    });
+
     App.request.attach("confirm", function(data) {
         App.confirm(
             data.title,
@@ -539,14 +555,37 @@ $(function() {
         );
     });
 
-    App.request.attach("saveOpenBuffer", function(data) {
-        var tab = $("#ide-tabs li.active a");
-
-        if (tab.length) {
-            App.request.post("saveFile", {
-                
-            });
-        }
+    App.request.attach("commit", function(data) {
+        App.prompt(
+            "Commit " + data.repo + "?",
+            "Message",
+            function(msg) {
+                $.post(
+                    "/json/commit",
+                    { message:msg, repo:data.repo },
+                    function(res) {
+                        if (res.success) {
+                            App.request.post("refreshStatus");
+                        }
+                        else {
+                            alert("Commit failed");
+                        }
+                    },
+                    "json"
+                );
+            }
+        );
     });
+
+
+    // App.request.attach("saveOpenBuffer", function(data) {
+    //     var tab = $("#ide-tabs li.active a");
+
+    //     if (tab.length) {
+    //         App.request.post("saveFile", {
+                
+    //         });
+    //     }
+    // });
 
 });

@@ -62,7 +62,7 @@ html, body { background:transparent; }
 .change .change-actions { float:right; margin-right:1em; }
 
 
-#addFile { 
+.actions > a { 
     float:right;
     margin-right:1.1em;
 }
