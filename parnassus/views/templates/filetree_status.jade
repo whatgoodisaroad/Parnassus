@@ -1,0 +1,37 @@
+mixin node(node)
+    ul.filetree-node
+        each child, name in node.children
+            if closeAll
+                li.folder
+                    h3.folder-toggle.closed(for = name)
+                        span= name
+                        span.weight= " (" + child.weight + ")"
+                    div(for = name).folder-children.hidden
+                        mixin node(child)
+            else
+                li.folder
+                    h3.folder-toggle.open(for = name)
+                        span= name
+                        span.weight= " (" + child.weight + ")"
+                    div(for = name).folder-children
+                        mixin node(child)
+        each change, name in node.leaves
+            li.change(data-commitment = change.get("commitment"), data-path = change.get("path"))
+                .filename= change.getName()
+                .btn-group.change-actions
+                    a.btn.dropdown-toggle.btn-mini("data-toggle" = "dropdown", href = "#")
+                        span= change.get("commitment")
+                        span.caret
+                    ul.dropdown-menu.pull-right
+                        li
+                            a.open-link Open
+                        if change.get("commitment") == "unstaged"
+                            li
+                                a.undo-link Undo Changes (Checkout)
+                            li
+                                a.stage-link Stage Changes (Add)
+                        else if change.get("commitment") == "staged"
+                            li
+                                a.unstage-link Unstage Changes (Reset)
+                .clearfix
+mixin node(root)

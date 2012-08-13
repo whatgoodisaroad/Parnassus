@@ -288,6 +288,150 @@ node_mixin(root);
 }
 return buf.join("");
 }
+jade.templates["filetree_status"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+var node_mixin = function(node){
+var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
+buf.push('<ul class="filetree-node">');
+// iterate node.children
+;(function(){
+  if ('number' == typeof node.children.length) {
+    for (var name = 0, $$l = node.children.length; name < $$l; name++) {
+      var child = node.children[name];
+
+if ( closeAll)
+{
+buf.push('<li class="folder"><h3');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('closed') }, {"for":true}));
+buf.push('><span>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="weight">');
+var __val__ = " (" + child.weight + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></h3><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') + ' ' + ('hidden') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+else
+{
+buf.push('<li class="folder"><h3');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('open') }, {"for":true}));
+buf.push('><span>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="weight">');
+var __val__ = " (" + child.weight + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></h3><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+    }
+  } else {
+    for (var name in node.children) {
+      var child = node.children[name];
+
+if ( closeAll)
+{
+buf.push('<li class="folder"><h3');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('closed') }, {"for":true}));
+buf.push('><span>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="weight">');
+var __val__ = " (" + child.weight + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></h3><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') + ' ' + ('hidden') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+else
+{
+buf.push('<li class="folder"><h3');
+buf.push(attrs({ 'for':(name), "class": ('folder-toggle') + ' ' + ('open') }, {"for":true}));
+buf.push('><span>');
+var __val__ = name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="weight">');
+var __val__ = " (" + child.weight + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></h3><div');
+buf.push(attrs({ 'for':(name), "class": ('folder-children') }, {"for":true}));
+buf.push('>');
+node_mixin(child);
+buf.push('</div></li>');
+}
+   }
+  }
+}).call(this);
+
+// iterate node.leaves
+;(function(){
+  if ('number' == typeof node.leaves.length) {
+    for (var name = 0, $$l = node.leaves.length; name < $$l; name++) {
+      var change = node.leaves[name];
+
+buf.push('<li');
+buf.push(attrs({ 'data-commitment':(change.get("commitment")), 'data-path':(change.get("path")), "class": ('change') }, {"data-commitment":true,"data-path":true}));
+buf.push('><div class="filename">');
+var __val__ = change.getName()
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div class="btn-group change-actions"><a data-toggle="dropdown" href="#" class="btn dropdown-toggle btn-mini"><span>');
+var __val__ = change.get("commitment")
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="caret"></span></a><ul class="dropdown-menu pull-right"><li><a class="open-link">Open</a></li>');
+if ( change.get("commitment") == "unstaged")
+{
+buf.push('<li><a class="undo-link">Undo Changes (Checkout)</a></li><li><a class="stage-link">Stage Changes (Add)</a></li>');
+}
+else if ( change.get("commitment") == "staged")
+{
+buf.push('<li><a class="unstage-link">Unstage Changes (Reset)</a></li>');
+}
+buf.push('</ul></div><div class="clearfix"></div></li>');
+    }
+  } else {
+    for (var name in node.leaves) {
+      var change = node.leaves[name];
+
+buf.push('<li');
+buf.push(attrs({ 'data-commitment':(change.get("commitment")), 'data-path':(change.get("path")), "class": ('change') }, {"data-commitment":true,"data-path":true}));
+buf.push('><div class="filename">');
+var __val__ = change.getName()
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</div><div class="btn-group change-actions"><a data-toggle="dropdown" href="#" class="btn dropdown-toggle btn-mini"><span>');
+var __val__ = change.get("commitment")
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span><span class="caret"></span></a><ul class="dropdown-menu pull-right"><li><a class="open-link">Open</a></li>');
+if ( change.get("commitment") == "unstaged")
+{
+buf.push('<li><a class="undo-link">Undo Changes (Checkout)</a></li><li><a class="stage-link">Stage Changes (Add)</a></li>');
+}
+else if ( change.get("commitment") == "staged")
+{
+buf.push('<li><a class="unstage-link">Unstage Changes (Reset)</a></li>');
+}
+buf.push('</ul></div><div class="clearfix"></div></li>');
+   }
+  }
+}).call(this);
+
+buf.push('</ul>');
+};
+node_mixin(root);
+}
+return buf.join("");
+}
 jade.templates["ide_tab"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];

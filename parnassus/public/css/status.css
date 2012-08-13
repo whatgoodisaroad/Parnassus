@@ -51,6 +51,7 @@ html, body { background:transparent; }
 
 .changes ul li.folder { color:#aaa; }
 .changes ul li.folder h3 { background:rgba(0,0,0,0.1); }
+.changes ul li.folder h3.open .weight { display:none; }
 
 .changes .change[data-commitment = "staged"]     { color:lime; }
 .changes .change[data-commitment = "unstaged"]   { color:cyan; }
@@ -60,7 +61,6 @@ html, body { background:transparent; }
 
 .change .filename { float:left; cursor:pointer; }
 .change .change-actions { float:right; margin-right:1em; }
-
 
 .actions > a { 
     float:right;

@@ -9,6 +9,13 @@ var FileTree = Backbone.Model.extend({
         leaves:{ }
     },
 
+    init:function() {
+        this.root = {
+            children:{ },
+            leaves:{ }
+        };
+    },
+
     setFileByPath:function(path, file) {
         def_rec(
             this.root,
@@ -21,9 +28,13 @@ var FileTree = Backbone.Model.extend({
                 if (obj.children[props[0]] == undefined) {
                     obj.children[props[0]] = {
                         children:{ },
-                        leaves:{ }
+                        leaves:{ },
+                        weight:0
                     };
                 }
+
+                ++obj.children[props[0]].weight;
+
                 def_rec(
                     obj.children[props[0]],
                     props.slice(1),

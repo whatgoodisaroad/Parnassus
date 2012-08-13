@@ -12,6 +12,10 @@ var ChangeType = {
 var Change = Backbone.Model.extend({ 
     pathComponents:function() {
         return this.get("path").split("/");
+    },
+    getName:function() {
+        var cs = this.pathComponents();
+        return cs[cs.length - 1];
     }
 });
 
@@ -233,7 +237,7 @@ var RepositoryStatus = Backbone.Model.extend({
                 function(data) {
                     self.parseStatus(data);
                     if ($.isFunction(fn)) {
-                        fn();
+                        fn(self.changes());
                     }
                 }
             );

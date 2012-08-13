@@ -530,6 +530,23 @@ $(function() {
         );
     });
 
+    App.request.attach("resetFile", function(data) {
+        $.post(
+            "/json/reset",
+            { repo:data.repo, file:data.path },
+            function(res) {
+                if (res.success) {
+                    App.request.post("refreshStatus");
+                    App.request.post("fileChanged", data);
+                }
+                else {
+                    alert("Reset failed");
+                }
+            },
+            "json"
+        );
+    });
+
     App.request.attach("addFile", function(data) {
         $.post(
             "/json/add",

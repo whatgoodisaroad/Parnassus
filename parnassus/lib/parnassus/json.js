@@ -92,11 +92,11 @@ exports.addFile = function(req, res) {
     );
 };
 
-exports.resetFile = function(req, res) {
+exports.resetFile = function(req, res) { 
     gitVerbOnFile(
         "reset", 
-        req.params.repo, 
-        req.params.path, 
+        req.body.repo, 
+        req.body.path, 
         res
     );
 };

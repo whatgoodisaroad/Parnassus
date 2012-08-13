@@ -33,6 +33,12 @@ var Actor = Backbone.Model.extend({
             this.processors[key] = [];
         }
 
-        this.processors[key].push(fn);
+        var newlen = this.processors[key].push(fn);
+
+        return newlen - 1;
+    },
+
+    detach:function(key, id) {
+        this.processors[key].splice(id, 1);
     }
 });
