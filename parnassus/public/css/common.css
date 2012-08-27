@@ -1,3 +1,8 @@
+body {
+    font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-size:12px;
+}
+
 .filetree-node {
     margin-left:1.2em;
 }
@@ -7,9 +12,7 @@
     cursor:pointer;
 }
 
-.filetree-node li.folder .folder-children {
-    border-left:1px dotted #888;
-}
+
 
 .filetree-node li.folder .folder-toggle:before {
     content:"\f0da";

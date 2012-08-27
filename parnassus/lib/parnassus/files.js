@@ -41,7 +41,7 @@ exports.edit = function(req, res) {
 
 exports.status = function(req, res) {
     res.render(
-        "status", 
+        "filenav", 
         { layout:false, repo:req.params.repo }
     );
 };

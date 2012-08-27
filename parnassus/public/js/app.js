@@ -77,21 +77,6 @@ var Router = Backbone.Router.extend({
                                     "mini_status",
                                     { repo:ws }
                                 );
-
-                                // var msg = (
-                                //     "The branch is " + 
-                                //     ws.get("branch") + 
-                                //     ". There are " + 
-                                //     ws.get("staged").length + 
-                                //     " staged changes. There are " + 
-                                //     ws.get("unstaged").length + 
-                                //     " unstaged changes. " + 
-                                //     "There are " + 
-                                //     ws.get("untracked").length + 
-                                //     " untracked files"
-                                // );
-
-                                // $w.find(".status").text(msg);
                              }
                          );
                     });

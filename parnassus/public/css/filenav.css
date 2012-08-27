@@ -1,64 +1,78 @@
-html, body { background:transparent; }
+body { background:transparent; }
 
-.changes h1,
-.changes h2 {
+#general {
+    padding:0 8px;
+}
+
+    #message {
+        width:206px;
+    }
+
+#commit-list li {
+    color:#ddd;
+}
+
+
+
+#stage-files h1,
+#stage-files h2 {
     padding:0.4em 0 0.4em 0.4em;
 }
 
-.changes ul {
+#stage-files ul {
     padding:0 0 0 0.8em;
     margin:0;
 }
 
-.changes ul li {
+#stage-files ul li {
     list-style:none;
     cursor:pointer;
     margin:0.4em 0
 }
 
-.changes ul li.folder .folder-toggle:before {
+#stage-files ul li.folder .folder-toggle:before {
     content:"\f0da";
     font-family:"FontAwesome";
     display:inline-block;
     margin-right:4px;
 }
 
-.changes ul li.folder .folder-toggle.open:before {
+#stage-files ul li.folder .folder-toggle.open:before {
     content:"\f0d7";
 }
 
-.changes h1,
-.changes h2,
-.changes h3 {
+#stage-files h1,
+#stage-files h2,
+#stage-files h3 {
     font-size:13px;
     line-height:16px;
     font-weight:normal;
     display:block;
 }
 
-.changes h1 {
+#stage-files h1 {
     background:rgba(10, 10, 10, 0.5);
     border-bottom:1px solid #2a2a2a;
 
     margin-top:2em;
     border-top:2px solid #555;
 }
-.changes h2 {
+#stage-files h2 {
     background:rgba(10, 10, 10, 0.3);
     border-bottom:1px solid #2a2a2a;
 }
 
-.changes ul li.folder { color:#aaa; }
-.changes ul li.folder h3 { 
+#stage-files ul li.folder { color:#aaa; }
+#stage-files ul li.folder h3 { 
     background:rgba(0,0,0,0.2);
     border-right:1px solid #404040;
 
 }
-.changes ul li.folder h3.open .weight { display:none; }
+#stage-files ul li.folder h3.open .weight { display:none; }
 
-.changes .change[data-commitment = "staged"]     { color:lime; }
-.changes .change[data-commitment = "unstaged"]   { color:cyan; }
-.changes .change[data-commitment = "ignored"]    { color:coral; }
+#stage-files .change[data-commitment = "staged"]     { color:lime; }
+#stage-files .change[data-commitment = "unstaged"]   { color:cyan; }
+#stage-files .change[data-commitment = "ignored"]    { color:coral; }
 
 .hidden { display:none; }
 
