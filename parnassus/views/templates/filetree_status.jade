@@ -16,21 +16,21 @@ mixin node(node)
                     div(for = name).folder-children
                         mixin node(child)
         each change, name in node.leaves
-            li.change(data-commitment = change.get("commitment"), data-path = change.get("path"))
-                .filename= change.getName()
+            li.change(data-commitment = change.commitment, data-path = change.path)
+                .filename= change.name
                 .btn-group.change-actions
                     a.btn.dropdown-toggle.btn-mini("data-toggle" = "dropdown", href = "#")
-                        span= change.get("commitment")
+                        span= change.commitment
                         span.caret
                     ul.dropdown-menu.pull-right
                         li
                             a.open-link Open
-                        if change.get("commitment") == "unstaged"
+                        if change.commitment == "unstaged"
                             li
                                 a.undo-link Undo Changes (Checkout)
                             li
                                 a.stage-link Stage Changes (Add)
-                        else if change.get("commitment") == "staged"
+                        else if change.commitment == "staged"
                             li
                                 a.unstage-link Unstage Changes (Reset)
                 .clearfix

@@ -8,7 +8,7 @@
     .clearfix
 ul.workspaces
     each workspace in workspaces
-        li(data-path = workspace.get("path") )
+        li(data-path = workspace.get("path"), data-name = workspace.get("name"))
             div
                 h1= workspace.get("name")
                 div.status

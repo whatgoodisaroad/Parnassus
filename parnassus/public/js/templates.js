@@ -382,19 +382,19 @@ buf.push('</div></li>');
       var change = node.leaves[name];
 
 buf.push('<li');
-buf.push(attrs({ 'data-commitment':(change.get("commitment")), 'data-path':(change.get("path")), "class": ('change') }, {"data-commitment":true,"data-path":true}));
+buf.push(attrs({ 'data-commitment':(change.commitment), 'data-path':(change.path), "class": ('change') }, {"data-commitment":true,"data-path":true}));
 buf.push('><div class="filename">');
-var __val__ = change.getName()
+var __val__ = change.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</div><div class="btn-group change-actions"><a data-toggle="dropdown" href="#" class="btn dropdown-toggle btn-mini"><span>');
-var __val__ = change.get("commitment")
+var __val__ = change.commitment
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</span><span class="caret"></span></a><ul class="dropdown-menu pull-right"><li><a class="open-link">Open</a></li>');
-if ( change.get("commitment") == "unstaged")
+if ( change.commitment == "unstaged")
 {
 buf.push('<li><a class="undo-link">Undo Changes (Checkout)</a></li><li><a class="stage-link">Stage Changes (Add)</a></li>');
 }
-else if ( change.get("commitment") == "staged")
+else if ( change.commitment == "staged")
 {
 buf.push('<li><a class="unstage-link">Unstage Changes (Reset)</a></li>');
 }
@@ -405,19 +405,19 @@ buf.push('</ul></div><div class="clearfix"></div></li>');
       var change = node.leaves[name];
 
 buf.push('<li');
-buf.push(attrs({ 'data-commitment':(change.get("commitment")), 'data-path':(change.get("path")), "class": ('change') }, {"data-commitment":true,"data-path":true}));
+buf.push(attrs({ 'data-commitment':(change.commitment), 'data-path':(change.path), "class": ('change') }, {"data-commitment":true,"data-path":true}));
 buf.push('><div class="filename">');
-var __val__ = change.getName()
+var __val__ = change.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</div><div class="btn-group change-actions"><a data-toggle="dropdown" href="#" class="btn dropdown-toggle btn-mini"><span>');
-var __val__ = change.get("commitment")
+var __val__ = change.commitment
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</span><span class="caret"></span></a><ul class="dropdown-menu pull-right"><li><a class="open-link">Open</a></li>');
-if ( change.get("commitment") == "unstaged")
+if ( change.commitment == "unstaged")
 {
 buf.push('<li><a class="undo-link">Undo Changes (Checkout)</a></li><li><a class="stage-link">Stage Changes (Add)</a></li>');
 }
-else if ( change.get("commitment") == "staged")
+else if ( change.commitment == "staged")
 {
 buf.push('<li><a class="unstage-link">Unstage Changes (Reset)</a></li>');
 }
@@ -449,18 +449,23 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<dl class="mini-status"><dt>Branch</dt><dd>');
-var __val__ = repo.get("branch")
+var __val__ = repo.branch
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</dd><dt>Staged Changes</dt><dd>');
-var __val__ = repo.get("staged").length
+buf.push('</dd>');
+if ( repo.changes.message == "changes")
+{
+buf.push('<dt>Staged Changes</dt><dd>');
+var __val__ = repo.changes.staged.length
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</dd><dt>Unstaged Changes</dt><dd>');
-var __val__ = repo.get("unstaged").length
+var __val__ = repo.changes.unstaged.length
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</dd><dt>Untracked Files</dt><dd>');
-var __val__ = repo.get("untracked").length
+var __val__ = repo.changes.untracked.length
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</dd></dl>');
+buf.push('</dd>');
+}
+buf.push('</dl>');
 }
 return buf.join("");
 }
@@ -488,7 +493,7 @@ buf.push('<div class="main-topbar"><div class="btn-group"><a class="btn view-con
       var workspace = workspaces[$index];
 
 buf.push('<li');
-buf.push(attrs({ 'data-path':(workspace.get("path")) }, {"data-path":true}));
+buf.push(attrs({ 'data-path':(workspace.get("path")), 'data-name':(workspace.get("name")) }, {"data-path":true,"data-name":true}));
 buf.push('><div><h1>');
 var __val__ = workspace.get("name")
 buf.push(escape(null == __val__ ? "" : __val__));
@@ -499,7 +504,7 @@ buf.push('</h1><div class="status"></div></div></li>');
       var workspace = workspaces[$index];
 
 buf.push('<li');
-buf.push(attrs({ 'data-path':(workspace.get("path")) }, {"data-path":true}));
+buf.push(attrs({ 'data-path':(workspace.get("path")), 'data-name':(workspace.get("name")) }, {"data-path":true,"data-name":true}));
 buf.push('><div><h1>');
 var __val__ = workspace.get("name")
 buf.push(escape(null == __val__ ? "" : __val__));

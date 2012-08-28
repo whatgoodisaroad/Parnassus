@@ -66,16 +66,13 @@ var Router = Backbone.Router.extend({
                          $.getJSON(
                              "/json/status/" + 
                                 encodeURIComponent(
-                                    $w.attr("data-path")
+                                    $w.attr("data-name")
                                 ), 
                              function(status) {
-                                var ws = new RepositoryStatus();
-                                ws.parseStatus(status);
-
                                 jade.render(
                                     $w.find(".status")[0],
                                     "mini_status",
-                                    { repo:ws }
+                                    { repo:status }
                                 );
                              }
                          );
@@ -114,56 +111,20 @@ var Router = Backbone.Router.extend({
 
         var router = this;
 
-        var rs = new RepositoryStatus({ name:name, path:path });
-        rs.loadStatus(function() {
+        jade.render(
+            $("#main")[0],
+            "workspace", { 
+                name:name, 
+            }
+        );
 
-            var tabs = new Backbone.Collection({ model:IdeTab });
+        var tabs = new Backbone.Collection({ model:IdeTab });
             
-            $("body")
-                .removeClassLike("route")
-                .addClass("route-edit");
+        $("body")
+            .removeClassLike("route")
+            .addClass("route-edit");
 
-            jade.render(
-                $("#main")[0],
-                "workspace", { 
-                    root:rs.get("path"),
-                    name:name, 
-                    repo:rs,
-                    unstaged:{
-                        modified:[],
-                        deleted:rs
-                            .get("unstaged")
-                            .filter(function(elem) { 
-                                return elem.get("changeType") == ChangeType.Delete;
-                            })
-                    }
-                }
-            );
-
-            updateStatus(rs);
-
-            $(".changeset ul li[data-path]").click(function() { 
-                var item = this;
-
-                router.navigate(
-                    "workspace/" + rs.get("name") + "/" + $(item).data("path"), 
-                    { trigger:true }
-                );
-            });
-
-            $(".folder-toggle").click(function() {
-                $(this)
-                    .toggleClass("open")
-                    .next()
-                        .toggleClass("hidden");
-            });
-
-            $("#addFileButton").click(function() {
-                App.confirm("Add File", "Add a file");
-            });
-
-            if ($.isFunction(cont)) { cont(); }
-        });
+        if ($.isFunction(cont)) { cont(); }
     },
 
     openFile:function(name, file) {

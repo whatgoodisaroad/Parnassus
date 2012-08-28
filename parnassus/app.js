@@ -40,9 +40,7 @@ app.get('/',                    routes.index);
 app.get("/edit/:path",          files.edit);
 
 app.get("/json/workspaces",     json.ws);
-app.get("/json/status/:path",   json.status);
-
-app.get("/json/status2/:name",   json.getBetterStatus);
+app.get("/json/status/:name",   json.status);
 
 app.get("/json/clone/:url",     json.clone);
 

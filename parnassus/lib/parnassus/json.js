@@ -32,26 +32,12 @@ exports.ws = function(req, res) {
 };
 
 exports.status = function(req, res) {
-	parnassus.workspaceStatus(
-		req.params.path,
-		function(status) {
-			res.end(
-				JSON.stringify(
-					status
-				)
-			);
-		}
-	);
-};
-
-
-exports.getBetterStatus = function(req, res) {
     var git = new Git({ name:req.params.name });
 
     git.updateStatus(function() {
         res.end(
             JSON.stringify(
-                git.get("changes")
+                git
             )
         );
     });

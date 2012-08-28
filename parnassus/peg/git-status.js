@@ -191,7 +191,9 @@ module.exports = (function(){
         pos0 = clone(pos);
         result0 = parse_nothing();
         if (result0 !== null) {
-          result0 = (function(offset, line, column) { return { }; })(pos0.offset, pos0.line, pos0.column);
+          result0 = (function(offset, line, column) { 
+                    return { message:"nothing" }; 
+                })(pos0.offset, pos0.line, pos0.column);
         }
         if (result0 === null) {
           pos = clone(pos0);
@@ -224,6 +226,7 @@ module.exports = (function(){
           if (result0 !== null) {
             result0 = (function(offset, line, column, staged, unstaged, untracked) {
                   return {
+                      message:"changes",
                       staged:staged,
                       unstaged:unstaged,
                       untracked:untracked
@@ -740,7 +743,7 @@ module.exports = (function(){
           result0 = (function(offset, line, column, file) { 
                 return { 
                     type:"untracked", 
-                    file:file.join("") 
+                    path:file.join("") 
                 }; 
             })(pos0.offset, pos0.line, pos0.column, result0[2]);
         }
@@ -830,7 +833,7 @@ module.exports = (function(){
           result0 = (function(offset, line, column, file) { 
                 return { 
                     type:"modified", 
-                    file:file.join("") 
+                    path:file.join("") 
                 }; 
             })(pos0.offset, pos0.line, pos0.column, result0[4]);
         }
@@ -920,7 +923,7 @@ module.exports = (function(){
           result0 = (function(offset, line, column, file) { 
                 return { 
                     type:"new", 
-                    file:file.join("") 
+                    path:file.join("") 
                 }; 
             })(pos0.offset, pos0.line, pos0.column, result0[4]);
         }
@@ -1010,7 +1013,7 @@ module.exports = (function(){
           result0 = (function(offset, line, column, file) { 
                 return { 
                     type:"deleted", 
-                    file:file.join("") 
+                    path:file.join("") 
                 }; 
             })(pos0.offset, pos0.line, pos0.column, result0[4]);
         }

@@ -9,11 +9,14 @@ start =
     }
 
 body = 
-    nothing { return { }; } / 
+    nothing { 
+            return { message:"nothing" }; 
+        } / 
     staged:staged?
     unstaged:unstaged?
     untracked:untracked? {
         return {
+            message:"changes",
             staged:staged,
             unstaged:unstaged,
             untracked:untracked
@@ -88,7 +91,7 @@ untrackedFile =
     lineEnd { 
         return { 
             type:"untracked", 
-            file:file.join("") 
+            path:file.join("") 
         }; 
     }
 modifiedFile = 
@@ -100,7 +103,7 @@ modifiedFile =
     lineEnd { 
         return { 
             type:"modified", 
-            file:file.join("") 
+            path:file.join("") 
         }; 
     }
 newFile = 
@@ -112,7 +115,7 @@ newFile =
     lineEnd { 
         return { 
             type:"new", 
-            file:file.join("") 
+            path:file.join("") 
         }; 
     }
 deletedFile = 
@@ -124,7 +127,7 @@ deletedFile =
     lineEnd { 
         return { 
             type:"deleted", 
-            file:file.join("") 
+            path:file.join("") 
         }; 
     }
 renamedFile = 
@@ -142,6 +145,8 @@ renamedFile =
             newName:newName.join("") 
         }; 
     }
+
+
 
 spaces = [ \t]+
 parenthesis = 
