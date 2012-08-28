@@ -1,7 +1,9 @@
 var 
     parnassus = require("./"),
     cp = require("child_process"),
-    fs = require("fs");
+    fs = require("fs"),
+
+    Git = require("../../public/js/model/git").Git;
 
 function gitVerbOnFile(verb, repo, path, res) {
     cp.exec(
@@ -41,6 +43,19 @@ exports.status = function(req, res) {
 		}
 	);
 };
+
+
+exports.getBetterStatus = function(req, res) {
+    var git = new Git({ name:req.params.name });
+
+    git.updateStatus(function() {
+        res.end(
+            JSON.stringify(
+                git.get("changes")
+            )
+        );
+    });
+}
 
 
 exports.clone = function(req, res) {
@@ -156,4 +171,6 @@ exports.commit = function(req, res) {
         }
     );
 };
+
+
 

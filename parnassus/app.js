@@ -17,6 +17,7 @@ app.configure(function(){
     app.use(express.static(__dirname + '/public'));
 });
 
+
 app.configure('development', function(){
     app.use(
         express.errorHandler({ 
@@ -40,6 +41,9 @@ app.get("/edit/:path",          files.edit);
 
 app.get("/json/workspaces",     json.ws);
 app.get("/json/status/:path",   json.status);
+
+app.get("/json/status2/:name",   json.getBetterStatus);
+
 app.get("/json/clone/:url",     json.clone);
 
 app.get("/json/list/:repo",     json.list);
