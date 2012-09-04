@@ -3,7 +3,12 @@ var
     path = require("path");
 
 exports.edit = function(req, res) {
-    var fullPath = process.cwd() + "/" + req.params.path;
+    var 
+        fullPath = process.cwd() + "/" + req.params.path,
+        matches = req.params.path.match(/workspace\/([^\/]+)\/[^\/]+\/(.+)$/),
+
+        repo = matches[1],
+        relativeFile = matches[2];
 
     var r = function(body) {
         res.render(
@@ -11,6 +16,10 @@ exports.edit = function(req, res) {
                 layout:false, 
                 body:body, 
                 path:fullPath,
+                
+                repo:repo,
+                relativeFile:relativeFile,
+                
                 file:req.params.path
             }
         );

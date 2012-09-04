@@ -22,9 +22,16 @@ html(lang='en')
                 li Removed catastrophic bugs
 
         #stage
-            #stage-files
-            div
-                button.btn.btn-small Open File
+            #stage-files.filetree
+            .tree-actions
+                button#openFileButton.btn.btn-mini Open File
+                .clearfix
+
+        #repository
+            #repository-files.filetree
+            .tree-actions
+                button#cancelButton.btn.btn-mini Cancel
+                .clearfix
         
         script(src = "/js/jquery-1.7.2.min.js")
 

@@ -1,10 +1,13 @@
 !!!
 html(lang='en')
   head
-    style html, body { margin:0; } #main-edit { width:100%; height:100%; }
+    link(rel = "stylesheet", href = "/css/editor.css")
   body
     input#fullPath(type = "hidden", value = path)
     input#file(type = "hidden", value = file)
+    input#repo(type = "hidden", value = repo)
+    input#relative(type = "hidden", value = relativeFile)
+
     #main-edit= body
     script(src='/js/jquery-1.7.2.min.js')
     script(src='/js/jquery.hotkeys.js')

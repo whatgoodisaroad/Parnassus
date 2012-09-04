@@ -8,78 +8,105 @@ body { background:transparent; }
         width:206px;
     }
 
+
+#commits { 
+    border-top:1px solid #404040;
+    padding:1em 0 0.5em 0;
+}
+
 #commit-list li {
     color:#ddd;
 }
 
 
+#stage-files > .filetree-node {
+    border-top:1px solid #404040;
+    padding:1em 0 1em 0.5em;
+}
 
-#stage-files h1,
-#stage-files h2 {
+.filetree h1,
+.filetree h2 {
     padding:0.4em 0 0.4em 0.4em;
 }
 
-#stage-files ul {
-    padding:0 0 0 0.8em;
+.filetree ul {
+    padding:0 0 0 1.4em;
     margin:0;
 }
 
-#stage-files ul li {
+.filetree ul li {
     list-style:none;
     cursor:pointer;
-    margin:0.4em 0
+    margin:0.1em 0
 }
 
-#stage-files ul li.folder .folder-toggle:before {
+.filetree ul li.folder .folder-toggle:before {
     content:"\f0da";
     font-family:"FontAwesome";
     display:inline-block;
     margin-right:4px;
 }
 
-#stage-files ul li.folder .folder-toggle.open:before {
+.filetree ul li.folder .folder-toggle.open:before {
     content:"\f0d7";
 }
 
-#stage-files h1,
-#stage-files h2,
-#stage-files h3 {
+.filetree h1,
+.filetree h2,
+.filetree h3 {
     font-size:13px;
     line-height:16px;
     font-weight:normal;
     display:block;
+    margin:0;
 }
 
-#stage-files h1 {
+.filetree h1 {
     background:rgba(10, 10, 10, 0.5);
     border-bottom:1px solid #2a2a2a;
 
     margin-top:2em;
     border-top:2px solid #555;
 }
-#stage-files h2 {
+.filetree h2 {
     background:rgba(10, 10, 10, 0.3);
     border-bottom:1px solid #2a2a2a;
 }
 
-#stage-files ul li.folder { color:#aaa; }
-#stage-files ul li.folder h3 { 
-    background:rgba(0,0,0,0.2);
+.filetree ul li.folder { color:#aaa; }
+.filetree ul li.folder h3 { 
     border-right:1px solid #404040;
-
+    font-size:12px;
 }
-#stage-files ul li.folder h3.open .weight { display:none; }
+.filetree ul li.folder h3.open .weight { display:none; }
 
-#stage-files .change[data-commitment = "staged"]     { color:lime; }
-#stage-files .change[data-commitment = "unstaged"]   { color:cyan; }
-#stage-files .change[data-commitment = "ignored"]    { color:coral; }
+.filetree .change { color:#eee; }
+
 
 .hidden { display:none; }
 
 .change .filename { float:left; cursor:pointer; }
-.change .change-actions { float:right; margin-right:1em; }
+
+.change .change-actions { visibility:hidden; float:right; margin-right:10px; }
+.change:hover .change-actions { visibility:visible; }
+
 
 .actions > a { 
     float:right;
     margin-right:1.1em;
 }
+
+.tree-actions { 
+    padding:1em 0 1em 0.5em; 
+    border-top:1px solid #404040; 
+}
+.tree-actions button { float:right; margin-right:10px; }
+
+
+
+
+
+
+
+
+

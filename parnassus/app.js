@@ -41,6 +41,9 @@ app.get("/edit/:path",          files.edit);
 
 app.get("/json/workspaces",     json.ws);
 app.get("/json/status/:name",   json.status);
+app.get("/json/diff/:name",     json.diff);
+
+
 
 app.get("/json/clone/:url",     json.clone);
 
@@ -52,6 +55,8 @@ app.post("/json/add",           json.addFile);
 app.post("/json/save",          json.save);
 app.post("/json/commit",        json.commit);
 
+
+app.get("/json/diffAdditionLines/:name/:file", json.diffAdditionLines);
 
 
 

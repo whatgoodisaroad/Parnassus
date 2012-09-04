@@ -41,8 +41,34 @@ exports.status = function(req, res) {
             )
         );
     });
-}
+};
 
+exports.diff = function(req, res) {
+    var git = new Git({ name:req.params.name });
+
+    git.updateDiff(function() {
+        res.end(
+            JSON.stringify(
+                git
+            )
+        );
+    });
+};
+
+exports.diffAdditionLines = function(req, res) {
+    var git = new Git({ name:req.params.name });
+
+    git.diffAdditionLines(
+        req.params.file,
+        function(results) {
+            res.end(
+                JSON.stringify(
+                    results
+                )
+            );
+        }
+    );
+};
 
 exports.clone = function(req, res) {
 	parnassus.cloneNew(

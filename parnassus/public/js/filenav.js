@@ -50,44 +50,52 @@ $(function() {
             $("#stage-files .dropdown-toggle").dropdown();
 
         });
-
-        return;
-
-
-
-        rs.loadStatus(function() {
-            
-            var 
-                ft = new FileTree(),
-                changes = rs.changes(),
-                change;
-
-            ft.init();
-
-            $("#stage-files").html("");
-
-            for (var idx = 0; idx < changes.length; ++idx) {
-                change = changes[idx];
-
-                ft.setFileByPath(
-                    change.get("path"),
-                    change
-                );
-            }
-
-            jade.render(
-                $("#stage-files")[0],
-                "filetree_status",
-                { root:ft.root, closeAll:false }
-            );
-
-            $("#stage-files .dropdown-toggle").dropdown();
-        });
     }
 
     loadStatus();
     request.attach("refreshStatus", loadStatus);
 
+
+    // Dropdown links:
+    $(document).on("click", ".filename, .open-link", function(evt) {
+        evt.preventDefault();
+
+        var path = $(evt.target)
+            .parents(".change:first")
+            .data("path");
+
+        request.post(
+            "openFile", 
+            { path:path, repo:repoName }
+        );
+    });
+
+    $("#openFileButton").on("click", function() {
+        $.getJSON(
+            "/json/list/" + data.repo, 
+            function(files) {
+                
+                var ft = new FileTree();
+                for (var idx = 0; idx < files.length; ++idx) {
+                    ft.setFileByPath(
+                        files[idx],
+                        "<a href=\"" 
+                            + [ "#workspace", data.repo, files[idx] ].join("/") 
+                            + "\">" 
+                            + files[idx] 
+                            + "</a>"
+                    );
+                }
+
+                
+            }
+        );
+    });
+
 });
+
+
+
+
 
 

@@ -2,13 +2,30 @@ $(function() {
     var 
         JavaScriptMode = require("ace/mode/javascript").Mode,
         editor = ace.edit("main-edit"),
+        session = editor.getSession(),
+
         request = parent.App.request,
 
         fullPath = $("#fullPath").val(),
-        file = $("#file").val();
+        file = $("#file").val(),
+
+        repo = $("#repo").val(),
+        relative = $("#relative").val();
 
     editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode(new JavaScriptMode());
+    session.setMode(new JavaScriptMode());
+
+    parent.session = session;
+
+    request.attach("gutter", function(data) {
+        editor.getSession().setAnnotations([{
+            row:10,
+            column:7,
+            text:"WTF",
+            type:"warning",
+            lint:" e"
+        }]);
+    });
 
     function save() {
         request.post(
@@ -34,4 +51,23 @@ $(function() {
             );
         }
     });
+
+    function updateAdditionLines() {
+        $.getJSON(
+            "/json/diffAdditionLines/" +
+                encodeURIComponent(repo) + "/" +
+                encodeURIComponent(relative),
+            function(lines) {
+                for (var idx = 0; idx < lines.length; ++idx) {
+                    session.addGutterDecoration(
+                        lines[idx],
+                        "git-diff-addition"
+                    );
+                }
+            }
+        );
+    }
+    updateAdditionLines();
+
+
 });
